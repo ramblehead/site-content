@@ -1,0 +1,44 @@
+{
+  "name": "@rh-site/content",
+  "version": "0.0.1",
+  "author": "Victor Rybynok",
+  "scripts": {
+    "lint": "eslint --ext .js,.cjs,.ts . && echo '' && tsc",
+    "build": "tsc -b tsconfig-build.json --listEmittedFiles && tsc-alias -vp tsconfig-cjs-alias.json && tsc-alias -vp tsconfig-esm-alias.json",
+    "clean": "rm -vrf dist buildcache",
+    "purge": "rm -vrf dist buildcache node_modules"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "eslintConfig": {
+    "extends": "./eslint.config.cjs"
+  },
+  "dependencies": {
+    "@rh-ogorod/js-configs": "workspace:*",
+    "dotenv": "^16.0.3",
+    "dotenv-expand": "^9.0.0",
+    "pino": "^8.7.0",
+    "pino-pretty": "^9.1.1",
+    "~": "link:./src"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.12",
+    "@typescript-eslint/eslint-plugin": "^5.46.0",
+    "@typescript-eslint/parser": "^5.46.0",
+    "eslint": "^8.29.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "tsc-alias": "1.8.2",
+    "type-expand": "^1.0.0",
+    "typescript": "^4.9.4"
+  }
+}
