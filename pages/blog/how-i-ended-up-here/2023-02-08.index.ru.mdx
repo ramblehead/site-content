@@ -1,0 +1,627 @@
+---
+title: Как я тут озазался
+authors:
+  - Виктор Рыбынок
+datePublished: '2023-02-01'
+dateUpdated: '2023-02-06'
+description: Высокоуровневый обзор того как этот сайт начал своё существование
+ogImage: /static/blog/how-i-ended-up-here/front-end-doom.jpg
+categories:
+  - fun
+---
+
+<figure>
+  <Image
+    src="/static/blog/how-i-ended-up-here/front-end-doom.jpg"
+    alt=""
+    priority
+  />
+  <figcaption></figcaption>
+  <figcaption>
+    <>Front-end Doom</>
+    <>[[ref](https://twitter.com/aravindameewal1/status/1362587906661961730)]</>
+  </figcaption>
+</figure>
+
+The story of how this site came into existence and the reasons behind its
+various technical decisions.
+
+## Priming
+
+Last time I had to stay at home during Christmas holiday was the first year of
+<abbr title="COrona VIrus Disease">COVID</abbr>&nbsp;– 2020. That Christmas, I
+decided to use an accidental spare time to upgrade myself with some Typescript
+and React. This decision has made my holiday interesting and created a good
+balance between codding nights and family time. Later that year my long-term C++
+project got shutdown and the new Typescript skills have proven to be a very
+useful addition in the next project.
+
+This year for a number of other reasons (
+<abbr title="COrona VIrus Disease">COVID</abbr> consequences?) I also had to
+skip Christmas travel to parents and stay home. This time I decided to build
+myself a website&nbsp;– a blog and a notes collection, a professional history
+board, and generally a place where I could keep my thoughts organised,
+searchable and shared with the rest of the world.
+
+Initially, the intention was not to do any codding and to focus exclusively on
+the content. For that purpose my inclination was to use one the (many) available
+static site generators (SSG) and host it on GitHub Pages. Well, the chosen
+<abbr title="Static Site Generator">SSG</abbr> software had to be open source,
+have a reasonable architecture and use a technology stack that I am already
+familiar with or interested to learn in the near feature. Thus, when time comes
+I would have more options of extending and improving my site than just relying
+on 3rd party mods and plugins.
+
+## To Hugo or not to Hugo
+
+[Jekyll](https://jekyllrb.com/) is an obvious candidate for GitHub Pages and it
+seems to be the most popular <abbr title="Static Site Generator">SSG</abbr>
+software. I did not spend much time looking into it, mostly because at the
+moment I am not interested in diving into Ruby.
+
+[Hugo](https://gohugo.io/) was the second
+<abbr title="Static Site Generator">SSG</abbr> software that caught my
+attention. I am interested in learning Go and I am already using couple of
+excellent software packages implemented in that language –
+[rclone](https://rclone.org/) and [restic](https://restic.net/). Thus, after
+spending some time reading about Hugo in different publications on the web and
+Hugo documentation itself, I got convinced that it seemed to be the right way to
+move forward with my site.
+
+I really liked the idea that Hugo is a single native executable rather than
+thousands inter-twisted scripts and its repository looks nicely structured and
+well maintained. Hugo community also looks active and there are many
+good-looking [themes](https://themes.gohugo.io/) available for free.
+
+The major perceived Hugo disadvantage was that if in the future I need to add
+more interactivity to the site pages, I would have to use some plugins or to
+write JavaScript code embedded into Go template pages myself. I have some
+previous experience in writing untyped browser-side JavaScript and using
+HTML-template languages. It is not great experience - especially if you coming
+from compiled statically-typed languages and desktop GUI applications.
+
+Thus, after deciding to give Hugo a go, I went through some of the available
+schemes and picked [Tufte Hugo](https://github.com/shawnohare/hugo-tufte) that
+is based on [Tufte-CSS](https://github.com/edwardtufte/tufte-css), which is in
+turn based on [Tufte-LaTeX](https://tufte-latex.github.io/tufte-latex/). Since
+my original background is academic and some of my future blog posts are likely
+to be somewhat mathematical, minimalistic Tufte style seems to be a good choice.
+
+Hugo itself and Tufte schema installation were as simple as Hugo documentation
+advertises. I am quite picky when it comes to the software user and developer
+experiences. So, after installation and initial configuration, I naturally went
+into generated code and theme templates for possible tweaks and customisations.
+I immediately disliked that the template-generated HTML files were neither
+prettified nor minified. Thus, Hugo needs an external prettier to read generated
+files comfortably and minifier to properly publish them.
+
+I initialised [yarn](https://yarnpkg.com/) in Hugo site repository, installed
+[prettier](https://prettier.io/) and configured my
+[Emacs](https://emacsredux.com/blog/2022/06/09/forever-emacs/) to prettify HTML
+files on save. Then, attempting to open Tufte Hugo HTML output file and
+prettify-save it has failed with prettier parsing errors. The template has
+generated `<p>` tags inside other `<p>` tags which is
+[illegal](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/p) (see
+"Permitted content"). This issue can be easily fixed by modifying Hugo template.
+However, that made me thinking that Hugo template implementers are not
+practising linters or other code sanitising techniques.
+
+Hugo documentation has a section on [Hugo Pipes](https://gohugo.io/hugo-pipes/)
+that in theory should allow linting, minification, CSS purging and other pre-
+and post-processing. However, it seems that those pipes are not used
+consistently across the community. Also, Hugo Pipes rely on external tools that
+makes it no longer a single Go-compiled executable.
+
+## Back to Next.js
+
+Thus, in my Hugo workflow I would still need to rely on Node.js and NPM to do
+repository-local package management and to perform those tasks that Hugo itself
+does not perform. At this point I started to realise that focusing on just
+content is not an option and I need to do a good deal of coding to get a site
+that I like. In this case Hugo is, probably, becoming an unnecessary overhead
+for me. Instead, I should use one of the Node.js-based
+<abbr title="Static Site Generator">SSG</abbr> frameworks with all their
+packages maintenance chores and infinitely deep `node_modules`.
+
+<figure>
+  <Image
+    src="/static/blog/how-i-ended-up-here/heaviest-node-modules.png"
+    alt=""
+    priority
+  />
+  <figcaption>
+    <>Heaviest Objects In The Universe: node_modules</>
+    <>[[ref](https://javascript.plainenglish.io/node-js-esm-npm-yarn-deep-dive-adda15dabce)]</>
+  </figcaption>
+</figure>
+
+After spending a few days on Hugo I was back to choosing another
+<abbr title="Static Site Generator">SSG</abbr> software. The other two main
+options I considered were [Gatsby](https://www.gatsbyjs.com/) and
+[Hexo](https://hexo.io/). My previous experience with React frameworks was with
+[CRA](https://create-react-app.dev/) and then [Next.js](https://nextjs.org/). In
+contrast to those, Gatsby has a large number of pluggins and themes. Gatsby has
+slightly more requirements on the project structure and feels somewhat more
+oppinionated - such as internal use of GraphQL to fetch data. Although it is
+possible that if I spent some more time on Gatsby, I would like it more,
+currently Next.js fits better my mental models and previous experience.
+
+Hexo was the last option that I looked at. It seems to be easy to use and also
+has extensive plugins and themes collection. Its documentation is a bit chaotic
+for my taste and community seems to be mostly Chinese-speaking. Unfortunately, I
+do not speak Chinese (not yet ;) and their site and documentation are full of
+advertisement banners that I quite dislike. Thus, the decision was made to go
+back to the comfort of Next.js
+
+My main takeout from various <abbr title="Static Site Generator">SSG</abbr>
+software packages investigation is that regardless of what I am going to use
+eventually, there are lots of schemes and plugins out there available to get
+ideas, inspirations, colour palettes and fonts! Also, many techniques, such as
+dark-light mode switching or styling are transferable across frameworks.
+
+## Components
+
+Since I already use Next.js at work for building embedded web user interfaces
+(WUI) for IoT-alike systems, there are a number of related decisions already
+made&nbsp;– such as the project structure or using the modern
+[yarn](https://yarnpkg.com/) for package management&nbsp;– I am happy with how
+it works and handles monorepositories.
+
+### Zendesk Garden
+
+At work I am mostly focusing on devices operation logic and data, trying to
+avoid styling and design decisions and much as possible. Some time ago I looked
+into available components-based React frameworks and settled on
+[Zendesk Garden](https://garden.zendesk.com/) as an instrument on choice for
+<abbr title="Web User Interface">WUI</abbr> building.
+
+I like aesthetics of Zendesk Garden design system, its clearly defined design
+principles and the language as well as its extensive and evolving components
+library. It is built around [styled components](https://styled-components.com/)
+(SC) for styling (view layer or presentation logic). Additionally, it has
+[Tailwind CSS]() design tokens that seamlessly blend tailwind utility classes
+into Zendesk Garden <abbr title="Styled Components">SC</abbr> design.
+
+On the other hand side Zendesk Garden library is large (i.e. when compiled from
+source code&nbsp;– individual components on NPM are more manageable) and has
+many external dependencies. While it is a good choice for building web
+applications with rich user experience, on-par with desktop GUI applications, I
+felt that it might be an overkill for a small personal site.
+
+I was previously avoiding using tailwind as have not had a good case to use
+utility classes instead of <abbr title="Styled Components">SC</abbr>. With a
+personal site that is mostly content-driven and low maintenance, tailwind seemed
+like a good choice. Tailwind native design system is also excellent, so I
+initially decided to use it on its own and avoid installing Zendesk Garden
+components. Tailwind integrates well with Next.js and as a former
+[Bootstrap](https://getbootstrap.com/) user, after basic configuration, tailwind
+made me feel at home.
+
+I quickly prototyped my future site "about" page in tailwind, stealing some
+design ideas from the mentioned above Tufte Hugo schema.
+
+From the very beginning I wanted to have a seamless dark and light modes
+switching as this feature looks interesting and it is becoming a standard
+requirement in modern websites and browsers.
+[next-themes](https://github.com/pacocoursey/next-themes) seemed to be the right
+colour theme abstraction library for Next.js applications. It only took a few
+minutes to integrate next-themes with tailwind&nbsp;– all are working
+out-of-the-box.
+
+The dark-light toggle has to have three states - `light`, `dark` and `system`.
+`system` is an important default option that allows browser to select the
+preferred palette based on the operating system GUI settings. As I do not like
+three states toggle types, I decided to implement a dropdown (aka popup) menu
+activated from an icon button with the three choices.
+
+Long time ago I tried to implement a dropdown menu from scratch (long before
+Typescript and React). I still remember how difficult is to implement a proper
+pop-up or even a button that work consistently from mouse, keyboard and
+touchscreen interfaces. My hope was that with modern web standards it should be
+much easier than it was in the past. I was wrong. My instincts took me to
+Zendesk Garden dropdown menu source code to copy'n'paste and simplify it in my
+site code. What a monstrous code it was, I had no idea how complex such "little"
+component can be.
+
+Admittedly, Zendesk Garden made its menu component as generic as possible to
+meet many use cases with a singe simple interface. So, I decided to use Zendesk
+Garden dropdown menu component from NPM as a dependency without trying to
+simplify it or to merge it with my site code. I got it switching my site dark
+and light themes within minutes. However, it quickly became apparent that
+Zendesk Garden Components themselves are not implementing themes switching. It
+seems to be one of the popular user requests at
+[zendesk support](https://support.zendesk.com/hc/en-us/articles/4408830934938-Is-there-a-dark-mode-for-Zendesk-Support)
+forum. Previously, I have not attempted to use themes switching with Zendesk
+Garden components.
+
+Thus, although Zendesk Garden dropdown menu does next-themes switching well, it
+does not switch its own theme making it look alien in dark modes. Investigating
+this issue further, I discovered that Zendesk Garden components are often using
+direct references to the colour palette (such as `white` for the background in
+buttons) instead of using semantic colours (such as `button-background-invert`)
+which makes it difficult to adjust colour theme in a consistent way (i.e.
+without calling `black` colour `white`).
+
+Another problem that I realised from this implementation is that Zendesk Garden
+components rely on <abbr title="Styled Components">SC</abbr> themes for their
+colours selection. It means that in
+<abbr title="Static Site Generator">SSG</abbr> deployment there is going to be a
+blink of server-rendered colours before browser logic changes them to the
+locally selected theme. Except doing all rendering client-side or having server
+site rendering (SSR) deployment, the only solution to this colour blink problem
+I can think of is CSS variables. That is what next-themes recommends and
+tailwind uses.
+
+### Headless, Radix UI and Styling
+
+After failing with Zendesk Garden, I looked at Tailwind CSS components solution,
+[Headless UI](https://headlessui.com/)&nbsp;– a small set of well designed
+components tailored for styling with tailwind. I did not spent much time on this
+library as after Zendesk Garden it felt a bit limited. Also, I found that
+although I like styling web pages look and layout with tailwind, it does not
+feel like a right tool for styling UI components&nbsp;– it is hard to beat
+experience that <abbr title="Styled Components">SC</abbr> provides.
+
+It occurred to me that there must be some similar "headless" library for
+<abbr title="Styled Components">SC</abbr> or bare CSS and I googled. A
+[medium article](https://medium.com/@nirbenyair/headless-components-in-react-and-why-i-stopped-using-ui-libraries-a8208197c268)
+by Nir Ben-Yair was an eyes opener. There is a whole world of the headless React
+components that I was unaware of! Or, better to say&nbsp;– unaware of the term
+_headless components_.
+
+What Nir's article made me realise is that I already used headless React
+components. Zendesk Garden calls their headless components
+[React Containers](https://zendeskgarden.github.io/react-containers). Also,
+previously at work I had some experience with
+[React-aria](https://react-spectrum.adobe.com/react-aria/). I did not like it
+then as it was a bit too low level for my mindset. However, after looking at
+React-aria from a perspective of headless components, they started to make more
+sense. So, I deiced to try them once again.
+
+As with my previous experience, React-aria was a lot harder to use than Headless
+UI - especially for menu components. It feels more suitable for designing new
+component libraries from scratch, although with a good predefined structure and
+well written design guidelines. Also, at the time of writing it had some issues
+with modern React version and insufficient Typescript support. For my small site
+I really did not want to develop and maintain a new components library. I wanted
+something in between Headless UI and React-aria&nbsp;– customisable, opinionated
+and headless.
+
+Nir's medium article suggests [Radix UI](https://www.radix-ui.com/) and
+[Reach UI](https://reach.tech/) as the first two headless libraries of (his)
+choice. Superficially, Radix UI looked better and provided more components. So,
+my next attempt to implement light-dark themes selector was based on Radix UI.
+
+Radix UI felt intuitive from the beginning. Its documentation is good and the
+library seemed to have the right balance between customisation and use
+simplicity. The library components documentation demonstrates two styling
+approaches: one with plain CSS and another with
+[Stitches](https://stitches.dev/)&nbsp;– yet another CSS-in-JS library. Stitches
+looked similar to <abbr title="Styled Components">SC</abbr> and I decided to
+give it a try to stay close to the library's official examples when doing
+components styling.
+
+Unlike <abbr title="Styled Components">SC</abbr>, Stitches internally rely on
+CSS variables for colours. Thus, it supported client-side themes switching
+out-of-the-box. It did not take long to implement light-dark themes site
+selector using Radix UI Dropdown Menu component and Stitches for styling. The
+standard HTML button focus do not behave consistently in browsers with keyboard
+and touchscreen interfaces. Therefore many component libraries implement their
+own version of buttons. Surprisingly, while having a lot of complex components
+Radix UI is missing basic buttons. Instead I used
+[react-interactive](https://github.com/rafgraph/react-interactive) library for
+implementing menu trigger.
+
+Everything worked well, however I now had three styling solutions&nbsp;– the
+plain CSS, Tailwind CSS and Stitches&nbsp;– each with its own theme definition.
+Such configuration is not sustainable in a longer term as all themes need to be
+adjusted manually to fit each other. In terms of the design language and
+aesthetics I liked tailwind the most. So, I decided to re-use its theme in
+Stitches. Browsing GitHub Stitches source code and issues for its theme
+implementation details, I discovered that Stitches is slowly sliding into
+[abandonware](https://github.com/stitchesjs/stitches/issues/1096).
+
+Abandonware libraries are not good for a small personal projects. Unless some
+bigger company takes over Stitches, I would not have resources to maintain it
+myself. Therefore, I decided to go back to
+<abbr title="Styled Components">SC</abbr> even if it means that I have to
+manually style Radix UI rather that adopting its documentation examples
+directly. Yet again I rewrote my light-dark selector with Radis UI and
+<abbr title="Styled Components">SC</abbr>.
+
+## CSS Variables
+
+Things have finally started to fit together - Radix UI, Tailwind CSS and
+<abbr title="Styled Components">SC</abbr> seemed to work for me.
+
+Usually, in my web projects I am trying to avoid CSS variables whenever possible
+as they are not statically typed, not easily refactorable and it is difficult to
+validate their usage correctness. However, from Stitches experiments I found a
+good way of using CSS variables within CSS-in-JS: it is possible to keep theme
+variables in JavaScript objects while storing their values in CSS variables.
+
+The idea is to use JavaScript object reflections capabilities to construct and
+map CSS variables from object members. Consider the following JavaScript objects
+that might be used as theme objects in
+<abbr title="Styled Components">SC</abbr>:
+
+```ts
+const defaultLightCssVars = {
+  colors: {
+    primary: {
+      300: '#2563eb',
+      400: '#3b82f6',
+    },
+    danger: {
+      300: '#fca5a5',
+      400: '#f87171',
+    },
+  },
+};
+
+const defaultDarkCssVars = {
+  colors: {
+    primary: {
+      300: '#2563eb',
+      400: '#3b82f6',
+    },
+    danger: {
+      300: '#dc2626',
+      400: '#ef4444',
+    },
+  },
+};
+```
+
+If those objects are used as <abbr title="Styled Components">SC</abbr> theme
+directly, then theme switching in <abbr title="Static Site Generator">SSG</abbr>
+deployment would either require client-side rendering (CSR) or suffer a short
+theme blink if a server-rendered theme does not match the theme selected at
+client side.
+
+However, instead of using above <abbr title="Styled Components">SC</abbr> theme
+objects directly, they can be processed to generate the following CSS classes:
+
+```css
+:root {
+  --rh-default-colors-primary-300: #93c5fd;
+  --rh-default-colors-primary-400: #60a5fa;
+  --rh-default-colors-danger-300: #fca5a5;
+  --rh-default-colors-danger-400: #f87171;
+}
+
+.dark {
+  --rh-default-colors-primary-300: #2563eb;
+  --rh-default-colors-primary-400: #3b82f6;
+  --rh-default-colors-danger-300: #dc2626;
+  --rh-default-colors-danger-400: #ef4444;
+}
+```
+
+Thus, by adding `dark` class to `:root` element or any of its children elements,
+the default light theme can be switched to dark theme. Such switching via
+`:root` class can be performed by the next-themes library that is already used
+as a part of my stack.
+
+Also, any of the above <abbr title="Styled Components">SC</abbr> theme object
+can be converted into the following CSS variable references object:
+
+```ts
+const defaultCssVars = {
+  colors: {
+    primary: {
+      300: 'var(--rh-default-colors-primary-300)',
+      400: 'var(--rh-default-colors-primary-400)',
+    },
+    danger: {
+      300: 'var(--rh-default-colors-danger-300)',
+      400: 'var(--rh-default-colors-danger-400)',
+    },
+  },
+};
+```
+
+This CSS variable references object can then be used as
+<abbr title="Styled Components">SC</abbr> theme object that uses the selected
+client-side theme indirectly by letting browser to substitute CSS variables with
+actual values according to the previously defined `:root` and `dark` classes.
+
+In this configuration SSG-produced pages are going to be the same regardless of
+the client-selected theme. At the same time such CSS variable references object
+is a normal TypeScript object that is statically typed and refactorable.
+Therefore, this way CSS variables become a developer-friendly and type-safe!
+
+Also, the actual values of colours, fonts, spacing etc. can be extracted from
+tailwind theme using its
+[resolveConfig](https://tailwindcss.com/docs/configuration#referencing-in-java-script)
+function. This way <abbr title="Styled Components">SC</abbr> theme becomes 100%
+compatible with the excellent already defined tailwind theme. Thus,
+<abbr title="Styled Components">SC</abbr> is used to style Radix UI headless
+components and tailwind to style everything else - such as typography or page
+layouts.
+
+In the past apart from the plain CSS I used [Less CSS](https://lesscss.org/) and
+[SASS](https://sass-lang.com/) for web pages styling. I also used (CSS
+Modules)[https://github.com/css-modules/css-modules] for styling with local
+namespace scopes. In my workflow, combination of Tailwind CSS and
+<abbr title="Styled Components">SC</abbr> are significant improvement of the
+development experience and productivity over SASS with CSS Modules. However, it
+would be great if there was a single universal solution for CSS styling needs.
+
+In my opinion, CSS-in-JS (or more accurately CSS-in-TS) with mostly
+ahead-of-time compilation is the future of CSS styling. I am trying to follow
+development of a few libraries that are implementing ahead-of-time CSS-in-JS:
+[vanilla-extract](https://vanilla-extract.style/),
+[linaria](https://linaria.dev/) and [griffel](https://griffel.js.org/). When
+those those libraries are more mature I may revisit my site styling strategy and
+hopefully simplify it.
+
+After light-dark themes and dropdown menu theme selector were working as
+expected, the next challenge was _i18n_. From the inception the plan was to make
+my site to be available in English and in Russian and, possibly, in some other
+languages in the future.
+
+## Internationalisation&nbsp;– i18n
+
+All my previous projects were single language. Some projects had to be designed
+with i18n in mind to be able to add more languages in the future. However,
+practically I never needed to implement something with actual bi- or
+multi-lingual support.
+
+I have done some reading in the past and knew that Next.js should handle i18n
+and language switching out-of-the-box. This Next.js feature is called
+[Internationalised Routing](https://nextjs.org/docs/advanced-features/i18n-routing)
+
+Internationalised routing facilitates locale detection and selecting a server
+route with a required language. The actual language strings mapping and
+formatting is done by a third party library. After some more googling and
+reading I picked [react-i18next](https://react.i18next.com/) as a first
+candidate to try.
+
+Even with the help of Next.js internationalised routing and react-i18next, i18n
+functionality was not easy to implement and took me a good few days of
+experiments with trials and errors. Eventually, I got it working and re-used my
+dark-light theme switching component for languages switching UI.
+
+Next.js [provides](https://nextjs.org/docs/advanced-features/static-html-export)
+`next export` command for producing
+<abbr title="Static Site Generator">SSG</abbr> output. Soon, after implementing
+i18n, I found that `next export` no longer works and I cannot get static HTML
+required for <abbr title="Static Site Generator">SSG</abbr> deployment. The
+problem is that `next export`
+[does not support](https://nextjs.org/docs/advanced-features/static-html-export#unsupported-features)
+international routing.
+
+Doing further search around react-i18next community, I discovered Locize blog
+[post](https://locize.com/blog/next-i18n-static/) that explains how to implement
+SSG-friendly i18n in Next.js without using international routing. The technique
+outlined in this post looked doable, although a bit complected for a small
+personal site. Before trying to implement this technique, I looked into another
+referenced Locize blog [post](https://locize.com/blog/next-13-app-dir-i18n/)
+dedicated to <abbr title="Static Site Generator">SSG</abbr> i18n in Next.js
+13&nbsp;– as I just started using that version of next.
+
+The <abbr title="Static Site Generator">SSG</abbr> i18n approaches for Next.js
+versions pre-13 and post-13 are radically different due to introduction of the
+new [app directory](https://beta.nextjs.org/docs/app-directory-roadmap). Next.js
+13+ app directory provides many new features such as
+[Server Components](https://nextjs.org/blog/next-13#server-components) or
+[Data Fetching](https://nextjs.org/blog/next-13#data-fetching) that I would like
+to use in my further developments. However, currently app directory is still in
+its beta stage and I have very little experience with it.
+
+Implementing <abbr title="Static Site Generator">SSG</abbr> i18n using
+conventional Next.js pages directory and then in the future porting to app
+directory does not make sense. I am already spending more time than originally
+planned on codding. Switching to app directory now would mean spending even more
+time for codding. As at the moment I would like to focus more on my site
+content, I decided to drop <abbr title="Static Site Generator">SSG</abbr>
+deployment for now. It also means dropping hosting on GitHub Pages and switching
+to [Vercel](https://vercel.com/) hosting.
+
+After I learn more about Next.js app directory and implement SSG-friendly i18n
+as described in the mentioned above Locize blog post,
+<abbr title="Static Site Generator">SSG</abbr> deployment should become possible
+again. Then I should revisit GitHub Pages hosting.
+
+## Syntax Highlight
+
+The first posts on my new site are likely going to be around software
+engineering subjects. Therefore the computer languages semantic text colouring
+is desirable. In the world of JavaScript the most popular libraries are
+[highlight.js](https://highlightjs.org/) and [prismjs](https://prismjs.com/)
+
+I use Emacs for most of my text editing. I have done some semantic highlight
+debugging and tweaking in that editor&nbsp;– mostly for
+[cc-mode](https://cc-mode.sourceforge.net/). Many grammar definitions there and
+most customisations are regex-based. As the syntax complexity grows, regular
+expressions are becoming quite unmaintainable.
+
+From my superficial review of highlight.js and prismjs, highlight.js grammar
+definitions seem to be more readable than prismjs which looks regex-based. There
+are chances that in the future I would need to correct some grammar for an
+already supported language or add some new language. Therefore I picked
+highlight.js as a syntax highlighting solution for my site.
+
+It seems that Emacs semantic highlight is
+[moving](https://lists.gnu.org/archive/html/emacs-devel/2022-11/msg01443.html)
+towards [Tree-sitter](https://tree-sitter.github.io/tree-sitter/). I really like
+Tree-sitter languages parsing approach and think that it is the future for the
+programming tools such as syntax highlight in modern text editors, on the web
+and everywhere else. However, at the moment it looks that there is no
+Tree-sitter-based web syntax highlight library ready for production use.
+
+I should revisit Tree-sitter-based web syntax highlight subject after upgrading
+to the new Emacs 29+ with the built-in Tree-sitter integration and getting more
+experience with it. For now I should focus on highlight.js
+
+It was not difficult to get highlight.js working with Typescript, JavaScript and
+JSON syntax following its documentation. As the
+[colour themes](https://highlightjs.org/static/demo/) I picked _A 11&nbsp;Y
+Light_ for light mode and _Tomorrow Night Blue_ for dark mode. For every theme
+highlight.js provides CSS and corresponding SCSS files in its NPM package.
+Unfortunately, I found no way to include those files with light-dark theme
+switching classes in either plain CSS, <abbr title="Styled Components">SC</abbr>
+or Tailwind CSS. The only sensible option was to use SCSS as the following:
+
+```scss
+:root {
+  @import 'highlight.js/scss/a11y-light.scss';
+
+  code {
+    background-color: rgb(0 0 0 / 5%);
+    border-radius: theme('borderRadius.sm');
+  }
+
+  pre {
+    background-color: rgb(0 0 0 / 4%);
+  }
+
+  .hljs {
+    background-color: transparent;
+  }
+}
+
+.dark {
+  @import 'highlight.js/scss/tomorrow-night-blue.scss';
+
+  code {
+    background-color: rgb(0 0 0 / 25%);
+  }
+
+  pre {
+    background-color: rgb(0 0 0 / 40%);
+  }
+
+  .hljs {
+    background-color: transparent;
+  }
+}
+```
+
+`hljs` is highlight.js class and `theme()` is Tailwind CSS
+[extension](https://tailwindcss.com/docs/functions-and-directives#theme).
+
+Unfortunatelly, this solution meas that additionally to plain CSS,
+<abbr title="Styled Components">SC</abbr> and Tailwind CSS, I would have to use
+SASS as well&nbsp;– just for the highlight.js switching support. Fortunately,
+Next.js supports SCSS out-of-the-box with no further configuration.
+
+<figure>
+  <Image
+    src="/static/blog/how-i-ended-up-here/css-anarchy.png"
+    alt=""
+    priority
+  />
+  <figcaption>
+    <>CSS Anarchy</>
+    <>[[ref](https://uxplanet.org/how-it-feels-like-to-style-things-in-2020-54177a93f30d)]</>
+  </figcaption>
+</figure>
+
+## Conclusion
+
+This post outlined key components of the technology stack used in my (this)
+site. It is also my first blog post. In further publications I intend to dive
+into some deeper details of the libraries, structures and patterns used when
+creating this site.

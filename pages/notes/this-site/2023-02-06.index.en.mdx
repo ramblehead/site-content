@@ -1,0 +1,37 @@
+---
+title: This Website
+dateUpdated: '2023-02-20'
+description:
+  Release notes, TODO list and ideas and for further development of this site.
+sortingPriority: 20
+---
+
+{/* &#9744; (☐) for [ ] and &#9745; (☑) for [x] */}
+
+### Small changes and additions
+
+#### &#9744; Links mouse-in and mouse-out animation
+
+<p />
+
+### More involved changes and improvements
+
+#### &#9744; Make src path relative to the containing mdx file dir
+
+For example, if mdx file dir is `blog/how-i-ended-up-here`, then currently its
+`src` is `/static/blog/how-i-ended-up-here/front-end-doom.jpg`.
+
+Instead, `src` should be `./static/front-end-doom.jpg` and a custom rehype
+pluggin (rehypeImgSize -> rehypeImg?) should update it to
+`/static/blog/how-i-ended-up-here/front-end-doom.jpg`
+
+### Longer and complex investigations
+
+#### &#9744; Replace Styled Components with Module SCSS and Tailwind
+
+<p />
+
+#### &#9744; Use @next/font
+
+https://nextjs.org/docs/api-reference/next/font<br />
+https://nextjs.org/docs/basic-features/font-optimization
