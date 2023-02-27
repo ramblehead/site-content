@@ -140,9 +140,9 @@ After spending a few days on Hugo I was back to choosing another
 options I considered were [Gatsby](https://www.gatsbyjs.com/) and
 [Hexo](https://hexo.io/). My previous experience with React frameworks was with
 [CRA](https://create-react-app.dev/) and then [Next.js](https://nextjs.org/). In
-contrast to those, Gatsby has a large number of pluggins and themes. Gatsby has
+contrast to those, Gatsby has a large number of plugins and themes. Gatsby has
 slightly more requirements on the project structure and feels somewhat more
-oppinionated - such as internal use of GraphQL to fetch data. Although it is
+opinionated - such as internal use of GraphQL to fetch data. Although it is
 possible that if I spent some more time on Gatsby, I would like it more,
 currently Next.js fits better my mental models and previous experience.
 
@@ -165,7 +165,7 @@ Since I already use Next.js at work for building embedded web user interfaces
 (WUI) for IoT-alike systems, there are a number of related decisions already
 made&nbsp;– such as the project structure or using the modern
 [yarn](https://yarnpkg.com/) for package management&nbsp;– I am happy with how
-it works and handles monorepositories.
+it works and handles monorepos.
 
 ### Zendesk Garden
 
@@ -230,7 +230,7 @@ simplify it or to merge it with my site code. I got it switching my site dark
 and light themes within minutes. However, it quickly became apparent that
 Zendesk Garden Components themselves are not implementing themes switching. It
 seems to be one of the popular user requests at
-[zendesk support](https://support.zendesk.com/hc/en-us/articles/4408830934938-Is-there-a-dark-mode-for-Zendesk-Support)
+[Zendesk Support](https://support.zendesk.com/hc/en-us/articles/4408830934938-Is-there-a-dark-mode-for-Zendesk-Support)
 forum. Previously, I have not attempted to use themes switching with Zendesk
 Garden components.
 
@@ -428,7 +428,7 @@ actual values according to the previously defined `:root` and `dark` classes.
 
 In this configuration SSG-produced pages are going to be the same regardless of
 the client-selected theme. At the same time such CSS variable references object
-is a normal TypeScript object that is statically typed and refactorable.
+is a normal Typescript object that is statically typed and refactorable.
 Therefore, this way CSS variables become a developer-friendly and type-safe!
 
 Also, the actual values of colours, fonts, spacing etc. can be extracted from
@@ -453,7 +453,7 @@ ahead-of-time compilation is the future of CSS styling. I am trying to follow
 development of a few libraries that are implementing ahead-of-time CSS-in-JS:
 [vanilla-extract](https://vanilla-extract.style/),
 [linaria](https://linaria.dev/) and [griffel](https://griffel.js.org/). When
-those those libraries are more mature I may revisit my site styling strategy and
+those libraries are more mature I may revisit my site styling strategy and
 hopefully simplify it.
 
 After light-dark themes and dropdown menu theme selector were working as
@@ -602,7 +602,7 @@ or Tailwind CSS. The only sensible option was to use SCSS as the following:
 `hljs` is highlight.js class and `theme()` is Tailwind CSS
 [extension](https://tailwindcss.com/docs/functions-and-directives#theme).
 
-Unfortunatelly, this solution meas that additionally to plain CSS,
+Unfortunately, this solution meas that additionally to plain CSS,
 <abbr title="Styled Components">SC</abbr> and Tailwind CSS, I would have to use
 SASS as well&nbsp;– just for the highlight.js switching support. Fortunately,
 Next.js supports SCSS out-of-the-box with no further configuration.
