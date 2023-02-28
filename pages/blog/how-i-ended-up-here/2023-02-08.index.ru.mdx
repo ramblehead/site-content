@@ -4,7 +4,10 @@ authors:
   - Виктор Рыбынок
 datePublished: '2023-02-01'
 dateUpdated: '2023-02-06'
-description: Высокоуровневый обзор того как этот сайт начал своё существование
+description:
+  Высокоуровневый обзор того как этот сайт начал своё существование, а также
+  пояснение причин выбора применяемых технических решений, таких как
+  используемый фреймворк, библиотеки компонентов, и подходы к стилизации CSS.
 ogImage: /static/blog/how-i-ended-up-here/front-end-doom.jpg
 categories:
   - fun
@@ -23,9 +26,6 @@ categories:
   </figcaption>
 </figure>
 
-The story of how this site came into existence and the reasons behind its
-various technical decisions.
-
 ## Priming
 
 Last time I had to stay at home during Christmas holiday was the first year of
@@ -34,23 +34,23 @@ decided to use an accidental spare time to upgrade myself with some Typescript
 and React. This decision has made my holiday interesting and created a good
 balance between codding nights and family time. Later that year my long-term C++
 project got shutdown and the new Typescript skills have proven to be a very
-useful addition in the next project.
+useful addition in my next project.
 
-This year for a number of other reasons (
-<abbr title="COrona VIrus Disease">COVID</abbr> consequences?) I also had to
+This year for a number of other reasons
+(<abbr title="COrona VIrus Disease">COVID</abbr> consequences?) I also had to
 skip Christmas travel to parents and stay home. This time I decided to build
 myself a website&nbsp;– a blog and a notes collection, a professional history
 board, and generally a place where I could keep my thoughts organised,
 searchable and shared with the rest of the world.
 
 Initially, the intention was not to do any codding and to focus exclusively on
-the content. For that purpose my inclination was to use one the (many) available
-static site generators (SSG) and host it on GitHub Pages. Well, the chosen
-<abbr title="Static Site Generator">SSG</abbr> software had to be open source,
-have a reasonable architecture and use a technology stack that I am already
-familiar with or interested to learn in the near feature. Thus, when time comes
-I would have more options of extending and improving my site than just relying
-on 3rd party mods and plugins.
+the content. For that purpose my inclination was to use one of the (many)
+available static site generators (SSG) and host it on GitHub Pages. Well, the
+chosen <abbr title="Static Site Generator">SSG</abbr> software had to be open
+source, have a reasonable architecture and use a technology stack that I am
+already familiar with or interested to learn in the near feature. Thus, when
+time comes I would have more options of extending and improving my site than
+just relying on 3rd party mods and plugins.
 
 ## To Hugo or not to Hugo
 
@@ -66,7 +66,7 @@ excellent software packages implemented in that language –
 [rclone](https://rclone.org/) and [restic](https://restic.net/). Thus, after
 spending some time reading about Hugo in different publications on the web and
 Hugo documentation itself, I got convinced that it seemed to be the right way to
-move forward with my site.
+move forward with my website.
 
 I really liked the idea that Hugo is a single native executable rather than
 thousands inter-twisted scripts and its repository looks nicely structured and
@@ -131,7 +131,7 @@ packages maintenance chores and infinitely deep `node_modules`.
   />
   <figcaption>
     <>Heaviest Objects In The Universe: node_modules</>
-    <>[[ref](https://javascript.plainenglish.io/node-js-esm-npm-yarn-deep-dive-adda15dabce)]</>
+    <>[[origin](https://javascript.plainenglish.io/node-js-esm-npm-yarn-deep-dive-adda15dabce)]</>
   </figcaption>
 </figure>
 
@@ -172,7 +172,7 @@ it works and handles monorepos.
 At work I am mostly focusing on devices operation logic and data, trying to
 avoid styling and design decisions and much as possible. Some time ago I looked
 into available components-based React frameworks and settled on
-[Zendesk Garden](https://garden.zendesk.com/) as an instrument on choice for
+[Zendesk Garden](https://garden.zendesk.com/) as an instrument of choice for
 <abbr title="Web User Interface">WUI</abbr> building.
 
 I like aesthetics of Zendesk Garden design system, its clearly defined design
@@ -441,8 +441,8 @@ components and tailwind to style everything else - such as typography or page
 layouts.
 
 In the past apart from the plain CSS I used [Less CSS](https://lesscss.org/) and
-[SASS](https://sass-lang.com/) for web pages styling. I also used (CSS
-Modules)[https://github.com/css-modules/css-modules] for styling with local
+[SASS](https://sass-lang.com/) for web pages styling. I also used [CSS
+Modules](https://github.com/css-modules/css-modules) for styling with local
 namespace scopes. In my workflow, combination of Tailwind CSS and
 <abbr title="Styled Components">SC</abbr> are significant improvement of the
 development experience and productivity over SASS with CSS Modules. However, it
@@ -615,7 +615,7 @@ Next.js supports SCSS out-of-the-box with no further configuration.
   />
   <figcaption>
     <>CSS Anarchy</>
-    <>[[ref](https://uxplanet.org/how-it-feels-like-to-style-things-in-2020-54177a93f30d)]</>
+    <>[[origin](https://uxplanet.org/how-it-feels-like-to-style-things-in-2020-54177a93f30d)]</>
   </figcaption>
 </figure>
 
