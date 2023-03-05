@@ -1,48 +1,53 @@
 ---
-title: Multi-language spelling in emacs
+title: Multi-language spelling in Emacs
 authors:
   - Victor Rybynok
 datePublished: '2023-03-05'
 # dateUpdated: '2023-02-20'
-description: Multi-language spelling in emacs.
+description: Multi-language spelling in Emacs.
 # ogImage: /static/blog/how-i-ended-up-here/front-end-doom.jpg
 categories:
   - fun
 ---
 
+## Priming
+
 Despite finishing Russian school and getting my undergraduate degree in Russian,
 my (fairly small) publishing practice mostly consists of English-language
-papers. In my early days in academia my preferred text editor was Microsoft
+writings. In my early days in academia my preferred text editor was Microsoft
 Word. With some practice and discipline in Word one could achieve
-content-presentation separation, consistent automatic styling and a certain
-degree of automation, such as images and equations numbering or generating a
-table of content. With some additional software and plugins, the level of
-automation could be even higher&nbsp;- such as automatic references list or
-image placement.
+content-presentation separation, consistent automatic styling and a some degree
+of automation, such as images and equations numbering or generating a table of
+content. With certain additional software and plugins, the level of automation
+could be increased further&nbsp;- such as automatic list of references or image
+placement.
 
 Despite obvious advantages of Word (and other WYSIWYG editors), there are
 reasons against using it. First, Word file format is complicated, not human
 readable and evolving over time. It is nearly impossible to open a complex Word
-document in some other editor and have its accurate visual representation. Even
+document in any other editor and have its accurate visual representation. Even
 the newer versions of Word occasionally fail to open a document created in its
-previous version. Second, many scientific journals used to provide a better
-quality LaTeX templates than Word. And third, I find LaTeX-rendered documents
-more visually appealing than Word documents.
+previous version. Second, many scientific journal publishers used to provide a
+better quality LaTeX templates than Word. And third, I find LaTeX-rendered
+documents more visually appealing than Word documents.
 
 Those reasons were sufficient for me to switch to LaTeX despite its steep
 learning curve and tall entry barrier. After learning the basics I realised that
-my usual then programming text editors were not convenient to edit prose text.
+my usual then programming text editors were not well suited to edit prose text.
 After trying many specialised LaTeX text editors I eventually converged to Emacs
 mode called AUCTeX. That is how my Emacs adventure began that led me to
 abandoning Visual Studio, then Windows and eventually moving to Linux.
 
-Some people are said to have innate literacy&nbsp;- it must be far right side of
-some literacy distribution curve. My literacy should be somewhere at another
-side of that curve&nbsp;- "innate illiteracy". Thus, after I had Emacs, AUCTeX
-and MiKTeX running, I had to find a good way to spell-check my writings.
-Something similar to Word's red squiggly line. Initially, I configured Emacs
-ispell package with aspell driver. Although ispell was useful, it felt too
-manual and retrograde in compare to Word's squiggly lines that I used to.
+## Motivation
+
+Some people are said to have innate literacy&nbsp;- it must be the far right
+side of some literacy distribution curve. My literacy should be somewhere at
+another side of that curve&nbsp;- "innate illiteracy". Thus, after I had Emacs,
+AUCTeX and MiKTeX running, I had to find a good way to spell-check my writings.
+Something similar to famous "Word's red squiggly line". Initially, I configured
+Emacs ispell package with aspell driver. Although ispell was useful for
+individual words checking, it felt too manual and retrograde in compare to
+Word's squiggly lines that I used to.
 
 However I do not remember details from that now distant past, for some reason I
 could not get flyspell working and ended-up installing and configuring speck
@@ -52,15 +57,22 @@ aspell and not with speck. Possibly, I could not configure it correctly because
 of my insufficient experience with ELisp and lack of interest in getting it
 working.
 
-By the time I started working on this site Emacs has became my editor of choice
-of all my text editing needs. Even more recent better text editor such as
-Sublime and Visual Studio Code do not fit my mindset as well as Emacs. Also, my
-ELisp confidence grew together with the size of my emcacs/init.el config file.
+Many years after those events, by the time I started working on this website,
+Emacs has became my editor of choice of all my text editing needs. Even more
+recent text editors such as Sublime and Visual Studio Code do not fit my mindset
+as well as Emacs. Also, my ELisp confidence grew together with the size of my
+`.config/emcacs/init.el` config file solidifying my faith in Emacs.
 
-From the beginning I wanted my site to have full i18n support and both English
-and Russian languages used as a default. Unfortunately, over these years of
-practicing Emacs my innate literacy did not become any better and I sill require
-a good spellchecker to tell me how I should not write. Initial internet search
-revealed a reddit post [Spell checkers in Emacs
-in 2020](https://www.reddit.com/r/emacs/comments/fxs92h/spell_checkers_in_emacs_in_2020/)
+From the beginning I wanted my site to have full i18n support, allowing English
+and Russian publications in the beginning and more languages in the future.
+Unfortunately, over these years of practicing Emacs my innate literacy did not
+become any better and I sill require a good spellchecker to tell me how I should
+not write. Initial internet search revealed a reddit post
+[Spell checkers in Emacs in 2020](https://www.reddit.com/r/emacs/comments/fxs92h/spell_checkers_in_emacs_in_2020/)
 that was a good starting point.
+
+## ispell with Hunspell
+
+http://aspell.net/man-html/Using-Multi-Dictionaries.html<br />
+https://github.com/GNUAspell/aspell/issues/448<br />
+https://www.emacswiki.org/emacs/SpeckMode
