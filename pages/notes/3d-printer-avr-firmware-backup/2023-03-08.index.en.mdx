@@ -1,0 +1,33 @@
+---
+title: 3D Printer AVR Firmware Backup
+dateUpdated: '2023-03-08'
+description: 'avrdude firmware upload and download hint'
+sortingPriority: 30
+---
+
+### Upload
+
+```bash
+avrdude \
+  -c <programmer type> \
+  -P <connection port> \
+  -b <override RS-232 baudrate> \
+  -p <partno, AVR device> \
+  -U <memtype>:r:file_name[:format]
+```
+
+### Download
+
+Use `w` (write) instead of `r` (read) for the `-U` option.
+
+### HTA3D Arduino USB-to-Serial example
+
+```bash
+avrdude -c wiring -P COM3 -b 115200 -p m2560 -U flash:r:flash-orig.hex:i
+avrdude -c wiring -P COM3 -b 115200 -p m2560 -U eeprom:r:eeprom-orig.hex:i
+```
+
+### References
+
+https://arduino.stackexchange.com/a/83883<br/>
+https://www.nongnu.org/avrdude/user-manual/avrdude_4.html
