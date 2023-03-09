@@ -68,11 +68,28 @@ From the beginning I wanted my site to have full i18n support, allowing English
 and Russian publications in the beginning and more languages in the future.
 Unfortunately, over these years of practicing Emacs my innate literacy did not
 become any better and I sill require a good spellchecker to tell me how I should
-not write. Initial internet search revealed a reddit post
+not write. Initial internet search revealed a Reddit post
 [Spell checkers in Emacs in 2020](https://www.reddit.com/r/emacs/comments/fxs92h/spell_checkers_in_emacs_in_2020/)
 that was a good starting point.
 
 ## ispell with Hunspell
+
+One of the replies in the Reddit post above created an impression that aspell
+can use multiple languages in the same buffer. That reply refers to
+[Using Multi Dictionaries](http://aspell.net/man-html/Using-Multi-Dictionaries.html)
+subsection of the aspell man pages. My attempts to configure aspell to use
+English and Russian dictionaries simultaneously in the same document have
+failed. Further readings reviled that aspell can only use additional
+dictionaries of the same language, such as a medical dictionary or a local
+dialect.
+
+There are ways to hack aspell to make it work with multiple dictionaries, such
+as: using one language spellchecker output as an input to another one; or
+concatenating different language dictionaries into one. There is a
+[multiple languages in one file](https://github.com/GNUAspell/aspell/issues/448)
+GitHub issue that goes into more details of those aspell hacking approaches and
+their related problems. The conclusion is that aspell on its own is not an
+optimal solution for multi-language documents spellchecking.
 
 http://aspell.net/man-html/Using-Multi-Dictionaries.html<br />
 https://github.com/GNUAspell/aspell/issues/448<br />
