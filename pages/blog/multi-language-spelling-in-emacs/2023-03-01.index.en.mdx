@@ -91,6 +91,35 @@ GitHub issue that goes into more details of those aspell hacking approaches and
 their related problems. The conclusion is that aspell on its own is not an
 optimal solution for multi-language documents spellchecking.
 
+In the Reddit post mentioned above some commenters mentioned Hunspell as an
+aspell alternative that can spellcheck multi-language buffers using multiple
+dictionaries. In my further Emacs configuration I would like to use stock Emacs
+packages as much as possible and reduce my reliance on 3rd parties packages.
+Therefore, the first choices were ispell and flyspell.
+
+It took me a while to figure out correct ispell config that works with Hunspell
+backed. The
+[blog post](https://200ok.ch/posts/2020-08-22_setting_up_spell_checking_with_multiple_dictionaries.html)
+by Alain M. Lafon was the most useful starting point.
+
+## Questions still unanswered
+
+Fly/en - language indicator is not correct - should show all Hunspell dicts.
+
+When ispell with Hunspell back-end is used, spellchecking a single word does not
+produce correct result - either the language has to be manually switched or a
+region selected.
+
+Hunspell personal dictionary mixes words in different languages. There should be
+a file per language instead.
+
+Face filter has to be adviced - no good way to customise it.
+
+flycheck-aspell
+
+spell-fu
+
 http://aspell.net/man-html/Using-Multi-Dictionaries.html<br />
 https://github.com/GNUAspell/aspell/issues/448<br />
-https://www.emacswiki.org/emacs/SpeckMode
+https://www.emacswiki.org/emacs/SpeckMode<br />
+https://github.com/d12frosted/flyspell-correct
