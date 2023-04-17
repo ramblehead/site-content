@@ -1,0 +1,34 @@
+---
+title: Porting Marlin Firmware to Funmat HT Intamsys 5.0
+dateUpdated: '2023-04-17'
+description:
+  Reversing Intamsys 5.0 board to find pins allocation required to configure
+  Marlin firmware. Also, adding BLTouch sensor to replace the built-in toggle
+  sensor.
+---
+
+### Intamsys 5.0 ATmega2560 TQFP pins map
+
+Pin  | Function
+-----|---------
+004  | Y Zero
+005  | Z Top
+008  | Z Bottom
+023  | Filament Run-out
+024  | Nozzle Leveling Sensor
+041  | EX Driver Enable
+042  | EX Driver Direction
+045  | EX Driver Step
+047  | E Driver Enable
+048  | E Driver Direction
+049  | E Driver Step
+063  | Z Driver Enable
+064  | Z Driver Direction
+065  | Z Driver Step
+067  | Y Driver Enable
+068  | Y Driver Direction
+082  | X Driver Enable
+084  | X Driver Direction
+085  | X Driver Step
+086  | Y Driver Step
+097  | X Zero
