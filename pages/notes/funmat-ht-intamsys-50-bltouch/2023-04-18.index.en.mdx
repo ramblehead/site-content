@@ -1,8 +1,7 @@
 ---
 title: Installing BLTouch to Funmat HT with Intamsys 5.0 Motherboard
 dateUpdated: '2023-04-18'
-description:
-  Adding BLTouch sensor alongside with the built-in toggle sensor.
+description: Adding BLTouch sensor alongside with the built-in toggle sensor.
 ---
 
 ### BLTouch Leveling Sensor wiring
@@ -25,7 +24,23 @@ https://www.ebay.co.uk/itm/204184579333
 | Black  | GND      |
 | White  | Z Min    |
 
+### Related G-codes and Commonly Used commands
+
+`G29 P1` initial mesh populate<br /> `G29 T` output mesh topology
+
+- [G29 - Bed Leveling (Unified)](https://marlinfw.org/docs/gcode/G029-ubl.html)
+- [G30 - Single Z-Probe](https://marlinfw.org/docs/gcode/G030.html)
+- [M420 - Bed Leveling State](https://marlinfw.org/docs/gcode/M420.html)
+- [M421 - Set Mesh Value](https://marlinfw.org/docs/gcode/M421.html)
+- [M851 - XYZ Probe Offset](https://marlinfw.org/docs/gcode/M851.html)
+
+### Printing surface mesh visualisation
+
+* [Visualize 3D mesh of our printing surface with Marlin 2.x (and without Octoprint)](https://3dwork.io/en/visualize-3d-mesh/)
+
 ### References
 
-* [Idiot's guide to getting a bltouch working (reprap.org forum)](https://reprap.org/forum/read.php?415,880766)
-* [HTA3D 3DTouch assembly and configuration](https://www.hta3d.com/en/blog/3dtouch-configuration)
+- [Idiot's guide to getting a bltouch working (reprap.org forum)](https://reprap.org/forum/read.php?415,880766)
+- [3DTouch Auto Leveling Sensor](https://www.geeetech.com/wiki/index.php/3DTouch_Auto_Leveling_Sensor)
+- [HTA3D 3DTouch assembly and configuration](https://www.hta3d.com/en/blog/3dtouch-configuration)
+- [BLTouch Sensor: All You Need to Know](https://all3dp.com/2/bltouch-sensors-guide/)
