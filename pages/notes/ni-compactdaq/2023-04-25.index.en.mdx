@@ -7,6 +7,8 @@ description:
 
 ## Python
 
+#### References
+
 [Python Resources for NI Hardware and Software](https://www.ni.com/en-gb/support/documentation/supplemental/16/python-resources-for-ni-hardware-and-software.html)<br />
 [NI-DAQmx Python Documentation](https://nidaqmx-python.readthedocs.io/en/latest/)<br />
 [NI Modular Instruments Python Documentation](https://www.ni.com/en-gb/support/documentation/supplemental/16/python-resources-for-ni-hardware-and-software.html)
@@ -15,7 +17,32 @@ description:
 
 ### Drivers and Software
 
-https://www.ni.com/en-gb/support/downloads/drivers/download.ni-daq-mx.html#480886
+Download
+[NI-DAQmx Linux installer](https://www.ni.com/en-gb/support/downloads/drivers/download.ni-daq-mx.html#480886).
+This zip archive contains `ni-ubuntu*-drivers-*.deb` packages for a few Linux
+distributives, including the latest versions of Ubuntu:<br/>
+
+- `ni-ubuntu*-drivers-stream.deb` is the most up-to-date release.
+- `ni-ubuntu*-drivers-*Q?.deb` is the current snapshot release.
+
+Installing one of those deb packages adds apt ppa list for National Instruments
+software that can be then installed with `apt install` commands:
+
+```bash
+sudo apt install ni-daqmx ni-hwcfg-utility ni-daqmx-cdaq-firmware
+sudo dkms autoinstall
+sudo reboot
+```
+
+Linux software does not include NI MAX GUI that is included in Windows software.
+Use `ni-hwcfg-utility` instead, as explained in this
+[NI support thread](https://knowledge.ni.com/KnowledgeArticleDetails?id=kA00Z0000019Y2XSAU&l=en-GB).
+
+#### References
+
+[Hardware Configuration Utility](https://www.ni.com/docs/en-US/bundle/hardwareconfigurationutility/page/definition.html)<br />
+[Launching Hardware Configuration Utility](https://www.ni.com/docs/en-US/bundle/hardwareconfigurationutility/page/launch-hwcu.html)<br />
+[Windows vs Desktop Linux DAQmx Experience Differences](https://www.ni.com/en-gb/support/documentation/supplemental/18/windows-vs-desktop-linux-daqmx-experience-differences.html)
 
 ## Windows
 
