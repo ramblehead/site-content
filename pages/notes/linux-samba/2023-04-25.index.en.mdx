@@ -1,21 +1,20 @@
 ---
-title: Linux Samba Notes Hints and References
+title: Linux Samba Hints and References
 dateUpdated: '2023-04-25'
 description:
-  Collection of Linux Samba configuration and troubleshooting hints and resource
-  references.
+  Collection of Linux Samba configuration hints and resource references.
 ---
 
 ### Ubuntu 22.04 Samba Server Home Directory Permission Issue
 
 In previous versions of Ubuntu, the user’s home directory permission was set to
 `755`, which allowed other users to view the directory as well as the containing
-files and sub-directories. To avoid such a security issue, the developers have
-set the permission to the home directories as `750`, which means only the owner
-of the home directory can view the contents.
+files and sub-directories. To avoid such a security issue, the home directories
+permission has been changed to `750`, which means only the owner of the home
+directory can view the contents.
 
-This change of policy causes an issue with public (anonymous) samba-shared
-folders within home directory. Even if `public = yes` parameter is used, only
+This change of policy causes an issue with public (anonymous) Samba-shared
+folders within home directories. Even if `public = yes` parameter is used, only
 the owner of the home directory can see the share.
 
 #### Reverting Home Directory Permission Solution
@@ -29,7 +28,7 @@ chmod o+rx /home/{USER}
 Add shared folders with either private access or using `force user = {USER}`
 parameter to `/etc/samba/smb.conf` as in the following example:
 
-```
+```toml
 [io]
   path = /home/rh/io
   guest ok = no
@@ -58,5 +57,91 @@ parameter to `/etc/samba/smb.conf` as in the following example:
 
 ### mDNS Names Resolution Issue in Windows 10+
 
-Since version 10, Windows OS support mDNS out-of-the-box. SMB services access by
-mDNS name seems to work only partially.
+Since version 10, Windows OS supports mDNS out-of-the-box. However, SMB service
+access by mDNS name seems to only work partially. Thus, on the following
+screenshot the folder browsing works as expected (`rhc-krancher` is
+mDNS-resolved name):
+
+<figure>
+  <Image
+    src="/static/notes/linux-samba/network-folder-mdns-name.png"
+    alt=""
+    className={null}
+    priority
+  />
+  <figcaption>
+    <>Network Folder Showing mDNS Host Name</>
+  </figcaption>
+</figure>
+
+while attempts to open non-public shared folders fail with the following
+message:
+
+<figure>
+  <Image
+    src="/static/notes/linux-samba/open-folder-mdns-error.png"
+    alt=""
+    className={null}
+    priority
+  />
+  <figcaption>
+    <>Open Folder mDNS Error in Windows 10</>
+  </figcaption>
+</figure>
+
+#### NetBIOS Aliases solution
+
+The following parameter can be added to `/etc/samba/smb.conf` to enable NetBIOS
+aliases in Samba:
+
+```toml
+netbios aliases = hostname, secondname, thirdname
+```
+
+### Some useful hints on Samba
+
+#### Testing `/etc/samba/smb.conf` for correctness
+
+```bash
+testparm
+```
+
+#### Restarting Samba server on Ubuntu
+
+Presumably, it should work other `systemd` GNU/Linux variants:
+
+```bash
+sudo systemctl restart smbd nmbd
+```
+
+#### Adding user to `sambashare` group
+
+```bash
+sudo usermod -aG sambashare {USER}
+```
+
+#### Changing Samba user password
+
+```bash
+sudo smbpasswd -a {USER}
+```
+
+#### Enforcing SMB protocol version
+
+Depending on the SMB client used, default Samba SMB protocol may or may not
+work. `client protocol` parameters family in `/etc/samba/smb.conf` could be used
+to enforce specific protocol version or versions range, for example:
+
+```toml
+client min protocol = SMB2_10
+client max protocol = SMB3
+client protocol = SMB3
+# client max protocol = SMB2_10
+# client protocol = SMB2_10
+# client protocol = SMB3_11
+```
+
+### References
+
+https://www.techrepublic.com/article/big-change-samba-ubuntu/<br />
+https://linux.how2shout.com/how-to-install-samba-on-ubuntu-22-04-lts-jammy-linux/
