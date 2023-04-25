@@ -89,7 +89,7 @@ message:
   </figcaption>
 </figure>
 
-#### NetBIOS Aliases solution
+#### NetBIOS Aliases Solution
 
 The following parameter can be added to `/etc/samba/smb.conf` to enable NetBIOS
 aliases in Samba:
@@ -98,7 +98,7 @@ aliases in Samba:
 netbios aliases = hostname, secondname, thirdname
 ```
 
-### Some useful hints on Samba
+### Some Useful Hints on Samba
 
 #### Testing `/etc/samba/smb.conf` for correctness
 
@@ -106,7 +106,7 @@ netbios aliases = hostname, secondname, thirdname
 testparm
 ```
 
-#### Restarting Samba server on Ubuntu
+#### Restarting Samba Server on Ubuntu
 
 Presumably, it should work other `systemd` GNU/Linux variants:
 
@@ -114,19 +114,19 @@ Presumably, it should work other `systemd` GNU/Linux variants:
 sudo systemctl restart smbd nmbd
 ```
 
-#### Adding user to `sambashare` group
+#### Adding User to `sambashare` Group
 
 ```bash
 sudo usermod -aG sambashare {USER}
 ```
 
-#### Changing Samba user password
+#### Changing Samba User Password
 
 ```bash
 sudo smbpasswd -a {USER}
 ```
 
-#### Enforcing SMB protocol version
+#### Enforcing SMB Protocol Version
 
 Depending on the SMB client used, default Samba SMB protocol may or may not
 work. `client protocol` parameters family in `/etc/samba/smb.conf` could be used
@@ -139,6 +139,13 @@ client protocol = SMB3
 # client max protocol = SMB2_10
 # client protocol = SMB2_10
 # client protocol = SMB3_11
+```
+#### Disconnecting Stalled Shared Folders in Windows Clients
+
+```powershell
+net use \\rhc-krancher\io /delete
+net use
+Get-SmbServerConfiguration | Select EnableSMB3Protocol
 ```
 
 ### References

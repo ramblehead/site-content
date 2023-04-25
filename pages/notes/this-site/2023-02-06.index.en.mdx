@@ -12,11 +12,18 @@ pin: 20
 
 #### &#9744; Links mouse-in and mouse-out animation
 
+#### &#9744; Add global languages to rehypeHighlight
+
+Currenly the used languages should be specifyed per-page. If globla languages
+are not possible in rehypeHighlight, then create a single module that exports
+all used languages.
+
 #### &#9744; Ensure that dates in Blog and Notes do not wrap on small screens
 
 #### &#9744; Hash links for page MDX headings
 
-These are also known as [hash anchors](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#linking_to_an_element_on_the_same_page).
+These are also known as
+[hash anchors](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#linking_to_an_element_on_the_same_page).
 
 <p />
 
@@ -40,6 +47,10 @@ https://github.com/garmeeh/next-seo
 It should be possible to click on images and open then in full size modal window
 and original format - i.e. without using Next.js Image component.
 
+#### &#9744; Add site about page
+
+Should be something similar to [nextra about](https://nextra.site/about)
+
 ### Longer and complex investigations
 
 #### &#9744; Use @next/font
@@ -61,6 +72,10 @@ https://giscus.app/
 
 #### &#9745; Replace Styled Components with Module SCSS and Tailwind
 
+#### &#9744; Add Site-Wide Search
+
+https://github.com/nextapps-de/flexsearch
+
 <p />
 
 ### Further Research
@@ -73,3 +88,10 @@ https://react-spectrum.adobe.com/react-aria/useDialog.html
 
 Find how to automatically check that all site-refferenced resources are alive
 and valid.
+
+#### &#9744; Investigate other language highlighting engines
+
+Possible options are:
+
+* [Rehype Pretty Code](https://github.com/atomiks/rehype-pretty-code) (based on [Shiki](https://github.com/shikijs/shiki))
+* [remark-prism](https://github.com/sergioramos/remark-prism) (based on [Prism](https://prismjs.com/))
