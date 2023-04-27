@@ -12,10 +12,10 @@ pin: 20
 
 #### &#9744; Links mouse-in and mouse-out animation
 
-#### &#9744; Add global languages to rehypeHighlight
+#### &#9744; Add global languages to `rehypeHighlight`
 
-Currenly the used languages should be specifyed per-page. If globla languages
-are not possible in rehypeHighlight, then create a single module that exports
+Currently the used languages should be specified per-page. If global languages
+are not possible in `rehypeHighlight`, then create a single module that exports
 all used languages.
 
 #### &#9744; Ensure that dates in Blog and Notes do not wrap on small screens
@@ -35,7 +35,7 @@ For example, if mdx file dir is `blog/how-i-ended-up-here`, then currently its
 `src` is `/static/blog/how-i-ended-up-here/front-end-doom.jpg`.
 
 Instead, `src` should be `./static/front-end-doom.jpg` and a custom rehype
-pluggin (rehypeImgSize -> rehypeImg?) should update it to
+plug-in (rehypeImgSize -> rehypeImg?) should update it to
 `/static/blog/how-i-ended-up-here/front-end-doom.jpg`
 
 #### &#9744; SEO
@@ -92,5 +92,7 @@ and valid.
 
 Possible options are:
 
-* [Rehype Pretty Code](https://github.com/atomiks/rehype-pretty-code) (based on [Shiki](https://github.com/shikijs/shiki))
-* [remark-prism](https://github.com/sergioramos/remark-prism) (based on [Prism](https://prismjs.com/))
+- [Rehype Pretty Code](https://github.com/atomiks/rehype-pretty-code) (based on
+  [Shiki](https://github.com/shikijs/shiki))
+- [remark-prism](https://github.com/sergioramos/remark-prism) (based on
+  [Prism](https://prismjs.com/))
