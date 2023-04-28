@@ -48,10 +48,12 @@ poetry completions bash >> ~/.bash_completion
 
 ### VS Code Integration with `venv` of `poetry` Projects
 
-1. Navigate to the root directory of `poetry` project and activate `poetry`
-   environment by running `poetry shell`
+1. Open terminal, navigate to the root directory of `poetry` project and
+   activate `poetry` environment by running `poetry shell`
+1. Notice virtual env path in terminal output
 1. Open the command palette in VS Code by pressing `Ctrl+Shift+P`, run
-   `Python: Select Interpreter` and select poetry interpreter.
+   `Python: Select Interpreter` and select "Enter interpreter path..."
+1. Navigate to the virtual env path and select `python` file
 1. Current Python environment should be shown in the bottom right corner of VS
    Code window.
 
