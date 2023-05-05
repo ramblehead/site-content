@@ -1,0 +1,157 @@
+---
+title: Python pyenv and poetry Notes
+dateUpdated: '2023-05-05'
+description:
+  Collection of Python pyenv and poetry application hints and resource
+  references. These instructions were tested on Ubuntu 22.04 LTS.
+---
+
+## Installing pyenv on Linux
+
+### Automatic Installation via pyenv-installer
+
+```bash
+# Use PYENV_GIT_TAG to install specific pyenv-installer version e.g.:
+# export PYENV_GIT_TAG=v2.2.5
+curl https://pyenv.run | bash
+```
+
+#### References
+
+- [pyenv bash installer](https://github.com/pyenv/pyenv-installer)
+
+### pyenv bash Environment
+
+Add the following lines to `~/.bashrc` (for interactive shells):
+
+```bash
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+eval "$(pyenv virtualenv-init -)"
+```
+
+Add the following lines to `/.profile` (for login shells):
+
+```bash
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+```
+
+#### References
+
+- [pyenv Main Repository](https://github.com/pyenv/pyenv/)
+- [Common Python build problems](https://github.com/pyenv/pyenv/wiki/Common-build-problems)
+- [Modern Python part 1: start a project with pyenv & poetry](https://www.adaltas.com/en/2021/06/09/pyrepo-project-initialization/)
+
+## Installing Python Build Dependencies
+
+### Ubuntu 22.04 LTS
+
+```bash
+sudo apt install make build-essential tk-dev libssl-dev libreadline-dev \
+                 libncurses-dev libbz2-dev zlib1g-dev libsqlite3-dev \
+                 libffi-devliblzma-dev libxml2-dev libxmlsec1-dev xz-utils curl
+```
+
+#### References
+
+- [Suggested build environment](https://github.com/pyenv/pyenv/wiki#suggested-build-environment)
+
+## Installing Python via pyenv
+
+To list available Python versions:
+
+```bash
+pyenv install -l
+```
+
+To install particular Python version:
+
+```bash
+pyenv install <version>
+```
+
+To select current Python version:
+
+```bash
+# global for current user account
+pyenv global <version>
+
+# current shell session
+pyenv shell <version>
+
+# current directory or its subdirectories
+pyenv local <version>
+```
+
+#### References
+
+- [Install additional Python versions](https://github.com/pyenv/pyenv/#install-additional-python-versions)
+
+
+## Installing poetry on Ubuntu 22.04 LTS
+
+### Automatic User Account Installation
+
+```bash
+curl -sSL https://install.python-poetry.org | python -
+```
+
+Python Poetry installation had multiple backwards-deprecating changes over time.
+Thus, the following are manual installation instructions in case if the above
+automatic installation gets deprecated once again.
+
+### Manual User Account Installation via pip with venv
+
+Ensure base Python installation via `apt`:
+
+```bash
+sudo apt install python python-is-python3 python3-venv
+```
+
+Install poetry in a dedicated `venv`:
+
+```bash
+VENV_PATH=~/.local/share/pypoetry/venv
+python -m venv $VENV_PATH
+$VENV_PATH/bin/pip install -U pip setuptools
+$VENV_PATH/bin/pip install poetry
+```
+
+Symlink installed `poetry` to a local `bin` directory:
+
+```bash
+ln -vs $VENV_PATH/bin/poetry ~/.local/bin
+```
+
+Test new `poerty` installation:
+
+```bash
+poetry --version
+# expected output example:
+# Poetry (version 1.4.2)
+```
+
+Enable `bash` tab completion:
+
+```bash
+poetry completions bash >> ~/.bash_completion
+```
+
+## Manual VS Code Integration with venv of poetry Projects
+
+1. Open terminal, navigate to the root directory of `poetry` project and
+   activate `poetry` environment by running `poetry shell`
+1. Notice virtual env path in terminal output
+1. Open the command palette in VS Code by pressing `Ctrl+Shift+P`, run
+   `Python: Select Interpreter` and select "Enter interpreter path..."
+1. Navigate to the virtual env path and select `python` file
+1. Current Python environment should be shown in the bottom right corner of VS
+   Code window.
+
+#### References
+
+- [Pyright Configuration](https://github.com/microsoft/pyright/blob/main/docs/configuration.md)
