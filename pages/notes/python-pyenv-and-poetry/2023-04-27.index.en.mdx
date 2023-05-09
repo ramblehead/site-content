@@ -135,7 +135,67 @@ Enable `bash` tab completion:
 poetry completions bash >> ~/.bash_completion
 ```
 
-## Manual VS Code Integration with venv of poetry Projects
+## poetry venv and VS Code
+
+### Installing venv in-project
+
+Many (all?) VS Code extensions, by default, look for project Python virtual
+environment in `<project-dir>/.venv`. To install Python virtual environment in
+project directory use the following command:
+
+```bash
+poetry config virtualenvs.in-project true --local
+```
+
+This command should add the following content to `<project-dir>/poetry.toml` file:
+
+```toml
+[virtualenvs]
+in-project = true
+```
+
+Then, run `poetry install` to create in-project virtual environment and install
+project dependencies there.
+
+### Pointing project config files to venv
+
+By default, poetry installs project virtual environment in
+`<user-home>/.cache/pypoetry/virtualenvs`. To get current `<project-venv>` use
+the following command:
+
+```bash
+poetry env info -p
+```
+
+To configure VS Code extensions to use current `<project-venv>` add the
+following lines to `.vscode/settings.json` (assuming Python 3.11 is used):
+
+```json
+{
+  "python.pythonPath": "<project-venv>/bin/python",
+  "ruff.path": [
+    "<project-venv>/bin/ruff"
+  ],
+  "python.venvPath": "<user-home>/.cache/pypoetry/virtualenvs",
+  "python.venvFolders": "<project-venv-name>",
+  "python.analysis.typeCheckingMode": "strict",
+  "python.analysis.extraPaths": [
+    "<project-venv>/lib/python3.11/site-packages"
+  ]
+}
+```
+
+To configure Pyright (and Pylance) add the following lines to
+`pyrightconfig.json` (or to equivalent keys in `pyproject.toml`):
+
+```json
+{
+  "venvPath": "<user-home>/.cache/pypoetry/virtualenvs",
+  "venv": "<project-venv-name>"
+}
+```
+
+### Manual VS Code Integration with venv of poetry Projects
 
 1. Open terminal, navigate to the root directory of `poetry` project and
    activate `poetry` environment by running `poetry shell`
