@@ -23,7 +23,7 @@ the owner of the home directory can see the share.
 chmod o+rx /home/{USER}
 ```
 
-#### Reverting Home Directory Permission Solution
+#### Enforcing Samba User Solution
 
 Add shared folders with either private access or using `force user = {USER}`
 parameter to `/etc/samba/smb.conf` as in the following example:
