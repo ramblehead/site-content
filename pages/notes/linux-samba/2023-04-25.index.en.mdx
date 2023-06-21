@@ -23,7 +23,7 @@ the owner of the home directory can see the share.
 chmod o+rx /home/{USER}
 ```
 
-#### Reverting Home Directory Permission Solution
+#### Enforcing Samba User Solution
 
 Add shared folders with either private access or using `force user = {USER}`
 parameter to `/etc/samba/smb.conf` as in the following example:
@@ -66,7 +66,7 @@ mDNS-resolved name):
   <Image
     src="/static/notes/linux-samba/network-folder-mdns-name.png"
     alt=""
-    className={null}
+    className="!rounded-none"
     priority
   />
   <figcaption>
@@ -81,7 +81,7 @@ message:
   <Image
     src="/static/notes/linux-samba/open-folder-mdns-error.png"
     alt=""
-    className={null}
+    className="!rounded-none"
     priority
   />
   <figcaption>
