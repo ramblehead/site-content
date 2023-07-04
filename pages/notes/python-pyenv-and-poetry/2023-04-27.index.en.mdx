@@ -136,6 +136,38 @@ Enable `bash` tab completion:
 poetry completions bash >> ~/.bash_completion
 ```
 
+### Poetry Plugin up and Package Versions
+
+`up` plugin updates dependencies and bumps their versions in pyproject.toml
+file. It works similar to `yarn up` command in Node.js. Install plugin:
+
+```bash
+poetry self add poetry-plugin-up
+```
+
+Update dependencies to latest available compatible versions:
+
+```bash
+poetry up --latest
+```
+
+Display the current and the latest version of the installed packages:
+
+```bash
+poetry show --latest
+```
+
+Display outdated packages only:
+
+```bash
+poetry show --outdated
+```
+Update 	&lt;package&gt; to the latest available version:
+
+```bash
+poetry add <package>@latest
+```
+
 ## poetry venv and VS Code
 
 ### Installing venv in-project
