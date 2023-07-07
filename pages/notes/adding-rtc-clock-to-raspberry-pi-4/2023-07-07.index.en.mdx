@@ -1,0 +1,109 @@
+---
+title: Adding RTC Clock to Raspberry PI 4
+dateUpdated: '2023-07-07'
+description:
+  A short instruction of how to add a Real Time Clock to Raspberry Pi.
+---
+
+### Setting up I2C
+
+#### Enable I2C
+
+```bash
+sudo raspi-config
+```
+
+#### Check if RTC Module is Connected to I2C
+
+```bash
+i2cdetect -y 1
+```
+
+<figure>
+  <Image
+    src="/static/notes/adding-rtc-clock-to-raspberry-pi-4/modprobe-correct-output.png"
+    alt=""
+    className="!rounded-none"
+    priority
+  />
+  <figcaption>
+    <>Example of the correct output</>
+  </figcaption>
+</figure>
+
+If instead of `68`, the I2C address is `UU` (Unbound/Unknown) then the I2C
+device has been detected but is not bound to the kernel driver.
+
+#### Setup RTC Clock
+
+Enable kernel module:
+
+```bash
+sudo modprobe rtc-ds1307
+```
+
+Run the following command as root to add I2C RTC device:
+
+```bash
+echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
+```
+
+Check the time on the RTC device:
+
+```bash
+sudo hwclock -r
+```
+
+Check the system clock time:
+
+```bash
+sudo date
+```
+
+Write the system time to the RTC board:
+
+```bash
+sudo hwclock -w
+```
+
+#### Auto-setup RTC Clock on every boot
+
+Add the following line to the end of `/etc/modules`:
+
+```bash
+rtc-ds1307
+```
+
+Add the following lines to `/etc/rc.local`:
+
+```bash
+echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
+hwclock -s
+date
+```
+
+#### Some debugging hints
+
+Run the following command as root to remove I2C RTC device:
+
+```bash
+echo 0x68 > /sys/class/i2c-adapter/i2c-1/delete_device
+```
+
+Check if RTC module loaded:
+
+```
+dmesg | grep ds1307
+```
+
+Check RTC module kernel messages:
+
+```
+dmesg | grep ds1307
+```
+
+### References
+
+- [Mini RTC Module for Raspberry Pi (DS3231)](https://thepihut.com/products/mini-rtc-module-for-raspberry-pi)
+- [Adding a Real Time Clock to your Raspberry Pi](https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-clock-to-your-raspberry-pi)
+- [Configuring I2C](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c)
