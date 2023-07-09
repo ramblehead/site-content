@@ -68,13 +68,13 @@ To list available Python versions:
 pyenv install -l
 ```
 
-To install particular Python version:
+To install particular Python `<version>`:
 
 ```bash
 pyenv install <version>
 ```
 
-To select current Python version:
+To select current Python `<version>`:
 
 ```bash
 # global for current user account
@@ -134,6 +134,14 @@ Enable `bash` tab completion:
 
 ```bash
 poetry completions bash >> ~/.bash_completion
+```
+
+### Poetry Python Version
+
+Set Poetry to use specific Python `<version>`:
+
+```bash
+poetry env use <version>
 ```
 
 ### Poetry Plugin up and Package Versions
