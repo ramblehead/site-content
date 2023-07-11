@@ -28,6 +28,12 @@ To update installation:
 rustup update
 ```
 
+To uninstall rust toolchain:
+
+```bash
+rustup self uninstall
+```
+
 ### Environment Configuration
 
 Add the following lines to `~/.bashrc` (for interactive shells) and to
@@ -55,7 +61,7 @@ Download and unpack the latest [rust-analyzer
 release](https://github.com/rust-lang/rust-analyzer/releases) e.g.:
 
 ```bash
-gzip -dc rust-analyzer-x86_64-unknown-linux-gnu.gz > ~/.cargo/bin/rust-analyzer
+gunzip -vc rust-analyzer-x86_64-unknown-linux-gnu.gz > ~/.cargo/bin/rust-analyzer
 ```
 
 #### References
