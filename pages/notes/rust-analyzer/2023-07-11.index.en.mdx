@@ -10,19 +10,19 @@ description:
 
 ### Automatic Installation via Rustup
 
-To add install rust toolchain:
+To install rust toolchain:
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-To add rust source, required for rust-analyzer:
+To add rust source (required for rust-analyzer):
 
 ```bash
 rustup component add rust-src
 ```
 
-To update installation:
+To update rust toolchain:
 
 ```bash
 rustup update
@@ -55,7 +55,7 @@ cd rust-analyzer
 cargo xtask install --server # will install rust-analyzer into $HOME/.cargo/bin
 ```
 
-### From Pre-Compiled Binary
+### From Pre-compiled Binary
 
 Download and unpack the latest [rust-analyzer
 release](https://github.com/rust-lang/rust-analyzer/releases) e.g.:
@@ -64,7 +64,7 @@ release](https://github.com/rust-lang/rust-analyzer/releases) e.g.:
 gunzip -vc rust-analyzer-x86_64-unknown-linux-gnu.gz > ~/.cargo/bin/rust-analyzer
 ```
 
-#### References
+### References
 
 - [Configuring Emacs for Rust development](https://robert.kra.hn/posts/rust-emacs-setup/)
 - [Notes about Rust installation](https://www.rust-lang.org/tools/install)
