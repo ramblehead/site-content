@@ -66,22 +66,24 @@ and display `UU` instead of RTC Clock:
 Check the time on the RTC device:
 
 ```bash
-sudo hwclock -r
+sudo hwclock --show
 ```
 
 Check the system clock time:
 
 ```bash
-sudo date
+date
+# or
+timedatectl
 ```
 
 Write the system time to the RTC board:
 
 ```bash
-sudo hwclock -w
+sudo hwclock --systohc
 ```
 
-#### Auto-setup RTC Clock on every boot
+#### Auto-setup RTC on every boot
 
 Add the following line to the end of `/etc/modules`:
 
@@ -97,7 +99,50 @@ hwclock -s
 date
 ```
 
-#### Some debugging hints
+#### Setting system and RTC time
+
+To disable automatic system clock synchronisation:
+
+```bash
+sudo systemctl disable systemd-timesync
+```
+
+To manually set the system clock and time zone via `timedatectl`:
+
+```bash
+timedatectl set-time "<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>"
+set-timezone <TIMEZONE>
+```
+
+To list possible `<TIMEZONE>` values:
+
+```bash
+timedatectl list-timezones
+```
+
+To manually set the system clock time via `date`:
+
+```bash
+sudo date MMDDhhmm[[CC]YY][.ss]
+
+# Where:
+#   MM: Month (01 to 12)
+#   DD: Day (01 to 31)
+#   hh: Hour (00 to 23)
+#   mm: Minute (00 to 59)
+#   CC: Century (optional)
+#   YY: Year (00 to 99)
+#   .ss: Seconds (optional)
+```
+
+To manually run auto-set the system clock time from `NTP`:
+
+```bash
+# sudo apt install ntpdate
+sudo ntpdate pool.ntp.org
+```
+
+#### RTC debugging hints
 
 Run the following command as root to remove I2C RTC device:
 
