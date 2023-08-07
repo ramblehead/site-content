@@ -1,0 +1,76 @@
+---
+title: 'Node.js NVM Notes'
+dateUpdated: '2023-08-07'
+description:
+  Collection of Node.js and Node Version Manager (nvm) application hints and resource
+  references. These hints were tested on Ubuntu 22.04 LTS.
+---
+
+## Installing nvm on Linux
+
+### Automatic Installation via nvm install
+
+To install or update nvm run the following script:
+
+```bash
+# see https://github.com/nvm-sh/nvm for the current version
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+```
+
+#### References
+
+- [Node Version Manager](https://github.com/nvm-sh/nvm)
+
+### nvm bash Environment
+
+Add the following lines to `~/.bashrc` (for interactive shells):
+
+```bash
+export NVM_DIR="${HOME}/.nvm"
+
+# load nvm
+[ -s "${NVM_DIR}/nvm.sh" ] && source "${NVM_DIR}/nvm.sh"
+
+# load nvm bash_completion
+[ -s "${NVM_DIR}/bash_completion" ] && source "${NVM_DIR}/bash_completion"
+
+# Set current NPM root
+NPM_ROOT="$(command -v npm > /dev/null && npm root -g)"
+if [ -n "${NPM_ROOT}" ]; then
+  export NODE_PATH="${NPM_ROOT}"
+fi
+```
+
+Add the following lines to `/.profile` (for login shells):
+
+```bash
+NVM_DIR="${HOME}/.nvm"
+
+# load nvm
+[ -s "${NVM_DIR}/nvm.sh" ] && source "${NVM_DIR}/nvm.sh"
+
+# Set current NPM root
+NPM_ROOT="$(command -v npm > /dev/null && npm root -g)"
+if [ -n "${NPM_ROOT}" ]; then
+  export NODE_PATH="${NPM_ROOT}"
+fi
+```
+
+## Installing Node.js via nvm
+
+To list available Node.js versions:
+
+```bash
+nvm ls-remote
+```
+To install particular Node.js `<version>`:
+
+```bash
+nvm install <version>
+```
+
+To select current Node.js `<version>`:
+
+```bash
+nvm nvm use <version>
+```
