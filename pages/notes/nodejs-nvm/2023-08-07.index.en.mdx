@@ -28,17 +28,11 @@ Add the following lines to `~/.bashrc` (for interactive shells):
 ```bash
 export NVM_DIR="${HOME}/.nvm"
 
-# load nvm
+# Load nvm
 [ -s "${NVM_DIR}/nvm.sh" ] && source "${NVM_DIR}/nvm.sh"
 
-# load nvm bash_completion
+# Load nvm bash_completion
 [ -s "${NVM_DIR}/bash_completion" ] && source "${NVM_DIR}/bash_completion"
-
-# Set current NPM root
-NPM_ROOT="$(command -v npm > /dev/null && npm root -g)"
-if [ -n "${NPM_ROOT}" ]; then
-  export NODE_PATH="${NPM_ROOT}"
-fi
 ```
 
 Add the following lines to `/.profile` (for login shells):
@@ -46,14 +40,8 @@ Add the following lines to `/.profile` (for login shells):
 ```bash
 NVM_DIR="${HOME}/.nvm"
 
-# load nvm
+# Load nvm
 [ -s "${NVM_DIR}/nvm.sh" ] && source "${NVM_DIR}/nvm.sh"
-
-# Set current NPM root
-NPM_ROOT="$(command -v npm > /dev/null && npm root -g)"
-if [ -n "${NPM_ROOT}" ]; then
-  export NODE_PATH="${NPM_ROOT}"
-fi
 ```
 
 ## Installing Node.js via nvm
