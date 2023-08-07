@@ -25,18 +25,19 @@ curl https://pyenv.run | bash
 Add the following lines to `~/.bashrc` (for interactive shells):
 
 ```bash
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+export PYENV_ROOT="${HOME}/.pyenv"
+command -v pyenv >/dev/null || export PATH="${PYENV_ROOT}/bin:${PATH}"
 
+eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 ```
 
 Add the following lines to `/.profile` (for login shells):
 
 ```bash
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+export PYENV_ROOT="${HOME}/.pyenv"
+command -v pyenv >/dev/null || export PATH="${PYENV_ROOT}/bin:${PATH}"
+
 eval "$(pyenv init -)"
 ```
 
