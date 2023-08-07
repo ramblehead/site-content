@@ -12,7 +12,7 @@ description:
 
 ```bash
 # Use PYENV_GIT_TAG to install specific pyenv-installer version e.g.:
-# export PYENV_GIT_TAG=v2.2.5
+# export PYENV_GIT_TAG=v2.3.23
 curl https://pyenv.run | bash
 ```
 
@@ -27,9 +27,7 @@ Add the following lines to `~/.bashrc` (for interactive shells):
 ```bash
 export PYENV_ROOT="${HOME}/.pyenv"
 command -v pyenv >/dev/null || export PATH="${PYENV_ROOT}/bin:${PATH}"
-
 eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
 ```
 
 Add the following lines to `/.profile` (for login shells):
@@ -37,7 +35,6 @@ Add the following lines to `/.profile` (for login shells):
 ```bash
 export PYENV_ROOT="${HOME}/.pyenv"
 command -v pyenv >/dev/null || export PATH="${PYENV_ROOT}/bin:${PATH}"
-
 eval "$(pyenv init -)"
 ```
 
