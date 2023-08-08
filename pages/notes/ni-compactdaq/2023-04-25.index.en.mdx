@@ -25,11 +25,24 @@ distributives, including the latest versions of Ubuntu:<br/>
 - `ni-ubuntu*-drivers-stream.deb` is the most up-to-date release.
 - `ni-ubuntu*-drivers-*Q?.deb` is the current snapshot release.
 
+To check Ubuntu version from CLI:
+
+```bash
+lsb_release -a
+```
+
 Installing one of those deb packages adds apt ppa list for National Instruments
 software that can be then installed with `apt install` commands:
 
 ```bash
-sudo apt install ni-daqmx ni-hwcfg-utility ni-daqmx-cdaq-firmware
+sudo dpkg -i <ni-ubuntu*-drivers-*.deb>
+sudo apt update
+
+sudo apt install ni-daqmx ni-daqmx-cdaq-firmware
+
+# This can only be used in GUI environemts
+sudo apt install ni-hwcfg-utility
+
 sudo dkms autoinstall
 sudo reboot
 ```
