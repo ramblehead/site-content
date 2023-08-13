@@ -112,17 +112,17 @@ solution based on Ben's work. Further Windows-specific internet search has
 revealed
 [this](https://answers.microsoft.com/en-us/windows/forum/all/netchip-rndisethernet-gadget-not-detected-on/9dfdd348-f503-47be-9c72-87736fb771a6)
 and
-[this](https://answers.microsoft.com/en-us/windows/forum/all/windows-10-vs-remote-ndis-ethernet-usbgadget-not/cb30520a-753c-4219-b908-ad3d45590447)
+[that](https://answers.microsoft.com/en-us/windows/forum/all/windows-10-vs-remote-ndis-ethernet-usbgadget-not/cb30520a-753c-4219-b908-ad3d45590447)
 threads on Microsoft answers forum. Reading those forums led me to another
 brilliant project from LEGO MINDSTORMS EV3 community:
 [ev3-systemd](https://github.com/ev3dev/ev3-systemd/blob/ev3dev-jessie/scripts/ev3-usb.sh). It
-looks like the cracked this problem in 2017 or earlier!
+looks like they cracked this problem in 2017 or earlier!
 
 I blended EV3 and Ben's configs with my own additions. The resulting
-configuration is little bit more complex, but it works on Ubuntu 22.04 LTS,
-Windows 10 and Windows 11 with no additional configuration supporting both RNDIS
-and CDC-ECM. To spare myself (and possibly others) from replaying this
-configuration in the future manually, I wrote a few automation
+configuration is little bit more complex, but it works on Linux and Windows with
+no additional configuration, supporting both RNDIS and CDC-ECM USB protocols. To
+spare myself (and possibly others) from replaying this configuration in the
+future manually, I wrote a few automation
 [scripts](https://github.com/ramblehead/rpi4-ethernet-over-usb). With this
 scripts, to configure Raspberry Pi 4 to local Ethernet-over-USB gadget mode
 execute the following commands in Pi terminal:
@@ -137,6 +137,10 @@ sudo ./setup-dnsmasq.sh
 
 Then reboot Raspberry Pi two times and it should be ready to connect to any host
 computer.
+
+The above commands assume that Pi is connected to the Internet to access
+GitHub. If it is offline, use some other ways to copy `rpi4-ethernet-over-usb`
+repository to your Raspberry Pi home directory.
 
 If you tested this configuration on other host platforms or have some comments
 or suggestions, feel free to share them below. Any bug reports or requests
