@@ -1,9 +1,139 @@
 ---
-title: Windows is not my Pie
-draft: true
+title: Windows is not my Pi
 dateUpdated: '2023-08-10'
 description:
-  Windows is not my Pie
+  Local Ethernet-over-USB Raspberry Pi configuration, compatible with Windows
+  (RNDIS) and other major operating systems (CDC-ECM).
 ---
 
-Windows is not my Pie
+When using Raspberry Pi 4 as an embedded system at some device, it is convenient
+to use a web server as the device user interface. Modern browsers expose
+sufficient functionality for web apps to perform on par with desktop and mobile
+applications. This type of Web User Interface (WUI) deployment is particularly
+attractive due to its unchallenged cross-platform compatibly, zero installation
+and, potentially, zero configuration.
+
+While Raspberry Pi 4 has Ethernet interface and it is fairly easy to configure
+on TCP/IP networks, it might still be challenging for an end user to connect it
+to their computer or an existing network. The recurring problem is the static IP
+versus DHCP configuration.
+
+If a device with embedded Raspberry Pi 4 is deployed using default DHCP client
+configuration, the end user could expect it to work when connected directly to a
+computer Ethernet port. It would, of course, fail as most personal computers are
+also configured by default as DHCP clients.
+
+A seemingly easy solution is to provide the end user with instructions of how to
+configure their computer Ethernet adapter with a static IP address and also
+configure embedded Raspberry Pi 4 with static IP. Such configuration should work
+with direct connection between Raspberry Pi and end user
+computer. Unfortunately, it would also fail when connecting to an existing
+network with DHCP server.  Additionally, user's computer would no longer work
+with networks that are running DHCP server.
+
+Well, static IP addresses would work in *some* networks with DHCP server and
+some more secure networks can be configured to allow certain static IP
+addresses. That, however, only adds more complexity to already complex
+configuration problem.
+
+Another solution to this network configuration problem could be adding a small
+display with some buttons to switch between static and dynamic IP address
+configurations, provide some connection diagnostics indicators and to allow user
+to manually set custom static IP address. In many cases this solution is less
+desirable as it increases device cost and complexity, and it is also no longer
+zero-configuration device to the end user.
+
+Yet another solution could be providing an Ethernet router along with the device
+to allow end user computer and Raspberry Pi to be both configured as DHCP
+clients. This might be a good solution if there are multiple devices that should
+be connected to the network simultaneously, and if the devices are large and
+expensive enough in compare to the size and cost of the router. In other cases,
+this solution is less good. Additionally, routers require a separate power
+supply.
+
+One more solution could be connecting an additional Ethernet adapter to
+Raspberry Pi as a USB dongle or a HAT. Then the native Ethernet port can be
+configured as DHCP client and the external Ethernet as static IP. Thus, the
+native Ethernet port can be connected to a network with DHCP server and the
+external Ethernet port can be used to connect Raspberry Pi to end user
+computer. Unfortunately, this solution could introduce an additional confusion -
+which port is which, and it does not eliminate the need of end user computer
+configuration with another static IP address.
+
+It seems that there is no good way of configuring Raspberry Pi 4 Ethernet
+adapter as mean to provide zero configuration device WUI to the end
+user. Alternative approach could be to use USB interface for direct computer
+connection and to reserve Ethernet for networks with DHCP server.
+
+In order to access device WUI via USB, the USB driver should support some kind
+of Ethernet-over-USB bridging. Linux kernel
+[supports](https://docs.kernel.org/usb/gadget_configfs.html) such capability,
+known as "USB gadget", for more than a decade. A brief internet search revivals
+that some more recent Raspberry Pi devices allow such USB configuration -
+including Raspberry Pi 4. Many internet forums and posts seem to suggest
+configuration that was originally
+[used](https://learn.adafruit.com/turning-your-raspberry-pi-zero-into-a-usb-gadget/ethernet-gadget)
+on Pi Zero devices. On Pi 4, it should be used with USB-C port that is also
+normally used for Raspberry Pi 4 power. This configuration is very simple:
+
+* On Pi 4, add `dtoverlay=dwc2` line to the end of `/boot/config.txt` file.
+* Add `modules-load=dwc2,g_ether` string after `rootwait` in
+  `/boot/cmdline.txt`.
+
+Unfortunately, on my Ubuntu 22.04 LTS systems it only works with "Direct Link
+Enabled":
+
+<figure>
+  <figcaption>
+    <>Ethernet-over-USB Direct Link Enabled</>
+  </figcaption>
+</figure>
+
+Windows 10 and Windows 11 recognise such USB configuration as COM port:
+
+<figure>
+  <figcaption>
+    <>Ethernet-over-USB recognised as COM port in Windows 10</>
+  </figcaption>
+</figure>
+
+Further internet search has revealed an excellent [blog
+post](https://github.com/ramblehead/rpi4-ethernet-over-usb/tree/main) by Ben
+Hardill. The configuration Ben proposes is more involved, but it demonstrates
+how to setup kernel's `usb_gadget`, including USB device descriptor, from shell
+and how DHCP server can be used at Raspberry Pi side, so the host computer does
+not require setting IP address manually. Ben's configuration works perfectly
+well on Ubuntu 22.04 LTS. On Windows 10 and Windows 11 it is still getting
+recognised as a COM port.
+
+Unfortunately, Windows support is important. Also, I would prefer to have
+`systemd` configuration over `/etc/rc.local`. So, I started working on my own
+solution based on Ben's work. Further Windows-specific internet search has
+revealed
+[this](https://answers.microsoft.com/en-us/windows/forum/all/netchip-rndisethernet-gadget-not-detected-on/9dfdd348-f503-47be-9c72-87736fb771a6)
+and
+[this](https://answers.microsoft.com/en-us/windows/forum/all/windows-10-vs-remote-ndis-ethernet-usbgadget-not/cb30520a-753c-4219-b908-ad3d45590447)
+threads on Microsoft answers forum. Reading those forums led me to another
+brilliant project from LEGO MINDSTORMS EV3 community:
+[ev3-systemd](https://github.com/ev3dev/ev3-systemd/blob/ev3dev-jessie/scripts/ev3-usb.sh). It
+looks like the cracked this problem in 2017 or earlier!
+
+I blended EV3 and Ben's configs with my own additions. The resulting
+configuration is little bit more complex, but it works on Ubuntu 22.04 LTS and
+on Windows 10 and Windows 11 with no additional configuration supporting both
+RNDIS and CDC-ECM. To spare myself (and possibly others) from replaying this
+configuration in the future manually, I wrote a few automations
+[scripts](https://github.com/ramblehead/rpi4-ethernet-over-usb). With this
+scripts, to configure Raspberry Pi 4 to local Ethernet-over-USB gadget mode
+execute the following commands in Pi terminal:
+
+```bash
+cd
+git clone https://github.com/ramblehead/rpi4-ethernet-over-usb.git
+cd rpi4-ethernet-over-usb
+sudo ./setup-usb.sh
+sudo ./setup-dnsmasq.sh
+```
+
+Then reboot Raspberry Pi two times and it should be read to connect to the host
+computer.

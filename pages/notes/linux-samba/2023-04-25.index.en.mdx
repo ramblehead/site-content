@@ -20,12 +20,12 @@ the owner of the home directory can see the share.
 #### Reverting Home Directory Permission Solution
 
 ```bash
-chmod o+rx /home/{USER}
+chmod o+rx /home/<user>
 ```
 
 #### Enforcing Samba User Solution
 
-Add shared folders with either private access or using `force user = {USER}`
+Add shared folders with either private access or using `force user = <user>`
 parameter to `/etc/samba/smb.conf` as in the following example:
 
 ```toml
@@ -117,13 +117,13 @@ sudo systemctl restart smbd nmbd
 #### Adding User to `sambashare` Group
 
 ```bash
-sudo usermod -aG sambashare {USER}
+sudo usermod -aG sambashare <user>
 ```
 
 #### Changing Samba User Password
 
 ```bash
-sudo smbpasswd -a {USER}
+sudo smbpasswd -a <user>
 ```
 
 #### Enforcing SMB Protocol Version
