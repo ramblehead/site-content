@@ -119,9 +119,9 @@ brilliant project from LEGO MINDSTORMS EV3 community:
 looks like the cracked this problem in 2017 or earlier!
 
 I blended EV3 and Ben's configs with my own additions. The resulting
-configuration is little bit more complex, but it works on Ubuntu 22.04 LTS and
-on Windows 10 and Windows 11 with no additional configuration supporting both
-RNDIS and CDC-ECM. To spare myself (and possibly others) from replaying this
+configuration is little bit more complex, but it works on Ubuntu 22.04 LTS,
+Windows 10 and Windows 11 with no additional configuration supporting both RNDIS
+and CDC-ECM. To spare myself (and possibly others) from replaying this
 configuration in the future manually, I wrote a few automation
 [scripts](https://github.com/ramblehead/rpi4-ethernet-over-usb). With this
 scripts, to configure Raspberry Pi 4 to local Ethernet-over-USB gadget mode
@@ -135,5 +135,10 @@ sudo ./setup-usb.sh
 sudo ./setup-dnsmasq.sh
 ```
 
-Then reboot Raspberry Pi two times and it should be read to connect to the host
+Then reboot Raspberry Pi two times and it should be ready to connect to any host
 computer.
+
+If you tested this configuration on other host platforms or have some comments
+or suggestions, feel free to share them below. Any bug reports or requests
+regarding automations scripts should be, preferably, reported at GitHub
+[issues](https://github.com/ramblehead/rpi4-ethernet-over-usb/issues)
