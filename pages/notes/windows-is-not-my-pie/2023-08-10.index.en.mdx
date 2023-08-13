@@ -19,9 +19,9 @@ to their computer or an existing network. The recurring problem is the static IP
 versus DHCP configuration.
 
 If a device with embedded Raspberry Pi 4 is deployed using default DHCP client
-configuration, the end user could expect it to work when connected directly to a
-computer Ethernet port. It would, of course, fail as most personal computers are
-also configured by default as DHCP clients.
+configuration, the end user could expect it to work when connected directly to
+the computer Ethernet port. It would, of course, fail as most personal computers
+are also configured by default as DHCP clients.
 
 A seemingly easy solution is to provide the end user with instructions of how to
 configure their computer Ethernet adapter with a static IP address and also
@@ -37,11 +37,11 @@ addresses. That, however, only adds more complexity to already complex
 configuration problem.
 
 Another solution to this network configuration problem could be adding a small
-display with some buttons to switch between static and dynamic IP address
-configurations, provide some connection diagnostics indicators and to allow user
-to manually set custom static IP address. In many cases this solution is less
-desirable as it increases device cost and complexity, and it is also no longer
-zero-configuration device to the end user.
+display to Raspberry Pi with some buttons to switch between static and dynamic
+IP address configurations, provide some connection diagnostics indicators and to
+allow user to manually set custom static IP address. In many cases this solution
+is less desirable as it increases device cost and complexity, and it is also no
+longer zero-configuration device.
 
 Yet another solution could be providing an Ethernet router along with the device
 to allow end user computer and Raspberry Pi to be both configured as DHCP
@@ -56,12 +56,12 @@ Raspberry Pi as a USB dongle or a HAT. Then the native Ethernet port can be
 configured as DHCP client and the external Ethernet as static IP. Thus, the
 native Ethernet port can be connected to a network with DHCP server and the
 external Ethernet port can be used to connect Raspberry Pi to end user
-computer. Unfortunately, this solution could introduce an additional confusion -
+computer. Unfortunately, this solution would introduce an additional confusion -
 which port is which, and it does not eliminate the need of end user computer
-configuration with another static IP address.
+configuration with static IP address.
 
 It seems that there is no good way of configuring Raspberry Pi 4 Ethernet
-adapter as mean to provide zero configuration device WUI to the end
+adapter as a mean to provide zero configuration device WUI to the end
 user. Alternative approach could be to use USB interface for direct computer
 connection and to reserve Ethernet for networks with DHCP server.
 
@@ -74,7 +74,7 @@ including Raspberry Pi 4. Many internet forums and posts seem to suggest
 configuration that was originally
 [used](https://learn.adafruit.com/turning-your-raspberry-pi-zero-into-a-usb-gadget/ethernet-gadget)
 on Pi Zero devices. On Pi 4, it should be used with USB-C port that is also
-normally used for Raspberry Pi 4 power. This configuration is very simple:
+normally used for power. This configuration is very simple:
 
 * On Pi 4, add `dtoverlay=dwc2` line to the end of `/boot/config.txt` file.
 * Add `modules-load=dwc2,g_ether` string after `rootwait` in
@@ -103,12 +103,12 @@ Hardill. The configuration Ben proposes is more involved, but it demonstrates
 how to setup kernel's `usb_gadget`, including USB device descriptor, from shell
 and how DHCP server can be used at Raspberry Pi side, so the host computer does
 not require setting IP address manually. Ben's configuration works perfectly
-well on Ubuntu 22.04 LTS. On Windows 10 and Windows 11 it is still getting
-recognised as a COM port.
+well on Ubuntu 22.04 LTS. Windows 10 and Windows 11 is still recognise it as a
+COM port.
 
 Unfortunately, Windows support is important. Also, I would prefer to have
-`systemd` configuration over `/etc/rc.local`. So, I started working on my own
-solution based on Ben's work. Further Windows-specific internet search has
+`systemd` configuration over using `/etc/rc.local`. So, I started working on my
+own solution based on Ben's work. Further Windows-specific internet search has
 revealed
 [this](https://answers.microsoft.com/en-us/windows/forum/all/netchip-rndisethernet-gadget-not-detected-on/9dfdd348-f503-47be-9c72-87736fb771a6)
 and
@@ -120,10 +120,10 @@ looks like they cracked this problem in 2017 or earlier!
 
 I blended EV3 and Ben's configs with my own additions. The resulting
 configuration is little bit more complex, but it works on Linux and Windows with
-no additional configuration, supporting both RNDIS and CDC-ECM USB protocols. To
-spare myself (and possibly others) from replaying this configuration in the
-future manually, I wrote a few automation
-[scripts](https://github.com/ramblehead/rpi4-ethernet-over-usb). With this
+no additional changes, supporting both RNDIS and CDC-ECM USB protocols. To spare
+myself (and possibly others) from replaying this configuration in the future
+manually, I wrote a few automation
+[scripts](https://github.com/ramblehead/rpi4-ethernet-over-usb). With these
 scripts, to configure Raspberry Pi 4 to local Ethernet-over-USB gadget mode
 execute the following commands in Pi terminal:
 
@@ -138,9 +138,9 @@ sudo ./setup-dnsmasq.sh
 Then reboot Raspberry Pi two times and it should be ready to connect to any host
 computer.
 
-The above commands assume that Pi is connected to the Internet to access
-GitHub. If it is offline, use some other ways to copy `rpi4-ethernet-over-usb`
-repository to your Raspberry Pi home directory.
+The above commands assume that Raspberry Pi is connected to the Internet to
+access GitHub. If it is offline, use some other ways to copy
+`rpi4-ethernet-over-usb` repository to your Raspberry Pi home directory.
 
 If you tested this configuration on other host platforms or have some comments
 or suggestions, feel free to share them below. Any bug reports or requests
