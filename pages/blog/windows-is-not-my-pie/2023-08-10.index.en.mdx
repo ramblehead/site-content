@@ -1,10 +1,23 @@
 ---
 title: Windows is not my Pi
-dateUpdated: '2023-08-10'
+authors:
+  - Victor Rybynok
+datePublished: '2023-08-13'
+draft: true
 description:
-  Local Ethernet-over-USB Raspberry Pi configuration, compatible with Windows
-  (RNDIS) and other major operating systems (CDC-ECM).
+  Local Ethernet-over-USB Raspberry Pi 4 configuration, usable for device web
+  user interfaces, and compatible with Windows (RNDIS) and other major host
+  operating systems (CDC-ECM).
+categories: [raspberry-pi, usb, dhcp, ethernet, mdns, rndis, cdc-ecm]
 ---
+
+## TL;DR
+
+Use
+[rpi4-ethernet-over-usb](https://github.com/ramblehead/rpi4-ethernet-over-usb)
+bash scripts to configure local Ethernet-over-USB on Raspberry Pi 4.
+
+## Priming
 
 When using Raspberry Pi 4 as an embedded system on a device, it is convenient to
 use a web server as the device user interface. Modern browsers expose sufficient
@@ -22,6 +35,8 @@ If a device with embedded Raspberry Pi 4 is deployed using default DHCP client
 configuration, the end user could expect it to work when connected directly to
 the computer Ethernet port. It would, of course, fail as most personal computers
 are also configured by default as DHCP clients.
+
+## Motivation
 
 A seemingly easy solution is to provide the end user with instructions of how to
 configure their computer Ethernet adapter with a static IP address and also
@@ -60,16 +75,20 @@ computer. Unfortunately, this solution would introduce an additional confusion -
 which port is which, and it does not eliminate the need of end user computer
 configuration with static IP address.
 
+## Ethernet-over-USB
+
 It seems that there is no good way of configuring Raspberry Pi 4 Ethernet
-adapter as a mean to provide zero configuration device WUI to the end
-user. Alternative approach could be to use USB interface for direct computer
-connection and to reserve Ethernet for networks with DHCP server.
+adapter as a mean to provide zero configuration device WUI. Alternative approach
+could be to use USB interface for direct computer connection and to reserve
+Ethernet for networks with DHCP server.
+
+### Simple Configuration from Pi Zero
 
 In order to access device WUI via USB, the USB driver should support some kind
 of Ethernet-over-USB bridging. Linux kernel
 [supports](https://docs.kernel.org/usb/gadget_configfs.html) such capability,
 known as "USB gadget", for more than a decade. A brief internet search revivals
-that some more recent Raspberry Pi devices allow such USB configuration -
+that some more recent Raspberry Pi devices allow such USB configuration&nbsp;-
 including Raspberry Pi 4. Many internet forums and posts seem to suggest
 configuration that was originally
 [used](https://learn.adafruit.com/turning-your-raspberry-pi-zero-into-a-usb-gadget/ethernet-gadget)
@@ -97,14 +116,18 @@ Windows 10 and Windows 11 recognise such USB configuration as COM port:
   </figcaption>
 </figure>
 
+### Ben Hardill's Configuration
+
 Further internet search has revealed an excellent [blog
 post](https://github.com/ramblehead/rpi4-ethernet-over-usb/tree/main) by Ben
 Hardill. The configuration Ben proposes is more involved, but it demonstrates
-how to setup kernel's `usb_gadget`, including USB device descriptor, from shell
-and how DHCP server can be used at Raspberry Pi side, so the host computer does
-not require setting IP address manually. Ben's configuration works perfectly
-well on Ubuntu 22.04 LTS. Windows 10 and Windows 11 is still recognise it as a
-COM port.
+how to setup kernel's `usb_gadget`, including USB device descriptor, from the
+shell and how DHCP server can be used at Raspberry Pi side, so the host computer
+does not require setting IP address manually. In my tests, Ben's configuration
+worked perfectly well on Ubuntu 22.04 LTS. Windows 10 and Windows 11 still
+recognise it as a COM port.
+
+### Ramblehead's Configuration
 
 Unfortunately, Windows support is important. Also, I would prefer to have
 `systemd` configuration over using `/etc/rc.local`. So, I started working on my
@@ -115,14 +138,14 @@ and
 [that](https://answers.microsoft.com/en-us/windows/forum/all/windows-10-vs-remote-ndis-ethernet-usbgadget-not/cb30520a-753c-4219-b908-ad3d45590447)
 threads on Microsoft answers forum. Reading those forums led me to another
 brilliant project from LEGO MINDSTORMS EV3 community:
-[ev3-systemd](https://github.com/ev3dev/ev3-systemd/blob/ev3dev-jessie/scripts/ev3-usb.sh). It
-looks like they cracked this problem in 2017 or earlier!
+[ev3-systemd](https://github.com/ev3dev/ev3-systemd/blob/ev3dev-jessie/scripts/ev3-usb.sh).
+It looks like they cracked this problem in 2017 or earlier!
 
-I blended EV3 and Ben's configs with my own additions. The resulting
+I blended EV3 and Ben's configurations with my own additions. The resulting
 configuration is little bit more complex, but it works on Linux and Windows with
-no additional changes, supporting both RNDIS and CDC-ECM USB protocols. To spare
-myself (and possibly others) from replaying this configuration in the future
-manually, I wrote a few automation
+no additional changes, simultaneously supporting both RNDIS and CDC-ECM USB
+protocols. To spare myself (and possibly others) from replaying this
+configuration in the future manually, I wrote a few automation
 [scripts](https://github.com/ramblehead/rpi4-ethernet-over-usb). With these
 scripts, to configure Raspberry Pi 4 to local Ethernet-over-USB gadget mode
 execute the following commands in Pi terminal:
@@ -135,8 +158,8 @@ sudo ./setup-usb.sh
 sudo ./setup-dnsmasq.sh
 ```
 
-Then reboot Raspberry Pi two times and it should be ready to connect to any host
-computer.
+Then reboot Raspberry Pi *two times* and it should be ready to connect to any
+host computer.
 
 The above commands assume that Raspberry Pi is connected to the Internet to
 access GitHub. If it is offline, use some other ways to copy
@@ -144,5 +167,5 @@ access GitHub. If it is offline, use some other ways to copy
 
 If you tested this configuration on other host platforms or have some comments
 or suggestions, feel free to share them below. Any bug reports or requests
-regarding automations scripts should be, preferably, reported at GitHub
+regarding automations scripts should, preferably, be reported at GitHub
 [issues](https://github.com/ramblehead/rpi4-ethernet-over-usb/issues)
