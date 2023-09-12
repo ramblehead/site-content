@@ -37,10 +37,10 @@ rustup self uninstall
 ### Environment Configuration
 
 Add the following lines to `~/.bashrc` (for interactive shells) and to
-`/.profile` (for login shells):
+`~/.profile` (for login shells):
 
 ```bash
-. "$HOME/.cargo/env"
+. "~/.cargo/env"
 ```
 
 ## Installing Rust Analyzer
@@ -52,7 +52,7 @@ To clone and compile rust-analyzer from source:
 ```bash
 git clone https://github.com/rust-analyzer/rust-analyzer.git -b release
 cd rust-analyzer
-cargo xtask install --server # will install rust-analyzer into $HOME/.cargo/bin
+cargo xtask install --server # will install rust-analyzer into ~/.cargo/bin
 ```
 
 ### From Pre-Compiled Binary
