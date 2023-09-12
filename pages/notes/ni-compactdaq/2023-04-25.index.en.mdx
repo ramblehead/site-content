@@ -12,6 +12,7 @@ description:
 - [Python Resources for NI Hardware and Software](https://www.ni.com/en-gb/support/documentation/supplemental/16/python-resources-for-ni-hardware-and-software.html)
 - [NI-DAQmx Python Documentation](https://nidaqmx-python.readthedocs.io/en/latest/)
 - [NI Modular Instruments Python Documentation](https://www.ni.com/en-gb/support/documentation/supplemental/16/python-resources-for-ni-hardware-and-software.html)
+- [NI-DAQmx Syntax for Specifying Physical Channel Strings](https://knowledge.ni.com/KnowledgeArticleDetails?id=kA00Z000000P8qaSAC&l=en-GB)
 
 ## Linux
 
@@ -51,6 +52,31 @@ Linux software does not include NI MAX GUI that is included in Windows software.
 Instead, use `ni-hwcfg-utility` for GUI and `nidaqmxconfig` for CLI, as
 explained in this
 [NI support thread](https://knowledge.ni.com/KnowledgeArticleDetails?id=kA00Z0000019Y2XSAU&l=en-GB).
+
+#### Getting NI DAQ lines and terminals from CLI
+
+The following are Linux CLI utilities could be used to identify and configure NI
+DAQ devices recognised by the system `nipxiconfig`, `nidaqmxconfig`, `nilsdev`.
+
+Unfortunately, non of the above utilities allow listing available device ports,
+lines and terminals (PFIs). Small Python scripts can be used to obtain such
+information:
+
+```python
+import nidaqmx
+
+# replace with your device name
+device_name = "cDAQ1Mod2"
+device = nidaqmx.system.Device(device_name)
+
+# Print all digital input lines
+for di in device.di_lines:
+    print(di.name)
+
+# Print all terminals (PFIs)
+for terminal in device.terminals:
+    print(terminal)
+```
 
 #### References
 
