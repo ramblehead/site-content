@@ -53,7 +53,13 @@ Instead, use `ni-hwcfg-utility` for GUI and `nidaqmxconfig` for CLI, as
 explained in this
 [NI support thread](https://knowledge.ni.com/KnowledgeArticleDetails?id=kA00Z0000019Y2XSAU&l=en-GB).
 
-#### Getting NI DAQ lines and terminals from CLI
+#### References
+
+- [Hardware Configuration Utility](https://www.ni.com/docs/en-US/bundle/hardwareconfigurationutility/page/definition.html)
+- [Launching Hardware Configuration Utility](https://www.ni.com/docs/en-US/bundle/hardwareconfigurationutility/page/launch-hwcu.html)
+- [Windows vs Desktop Linux DAQmx Experience Differences](https://www.ni.com/en-gb/support/documentation/supplemental/18/windows-vs-desktop-linux-daqmx-experience-differences.html)
+
+### Getting NI DAQ lines and terminals from CLI
 
 The following are Linux CLI utilities could be used to identify and configure NI
 DAQ devices recognised by the system `nipxiconfig`, `nidaqmxconfig`, `nilsdev`.
@@ -77,12 +83,6 @@ for di in device.di_lines:
 for terminal in device.terminals:
     print(terminal)
 ```
-
-#### References
-
-- [Hardware Configuration Utility](https://www.ni.com/docs/en-US/bundle/hardwareconfigurationutility/page/definition.html)
-- [Launching Hardware Configuration Utility](https://www.ni.com/docs/en-US/bundle/hardwareconfigurationutility/page/launch-hwcu.html)
-- [Windows vs Desktop Linux DAQmx Experience Differences](https://www.ni.com/en-gb/support/documentation/supplemental/18/windows-vs-desktop-linux-daqmx-experience-differences.html)
 
 ## Windows
 
