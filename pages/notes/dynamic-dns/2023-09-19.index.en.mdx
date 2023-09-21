@@ -1,8 +1,8 @@
 ---
 title: Dynamic DNS
-dateUpdated: '2023-09-19'
+dateUpdated: '2023-09-21'
 description:
-  Collection of Dynamic DNS hints and resource references.
+  Collection of Dynamic DNS user configuration hints and resource references.
 ---
 
 ## Why Dynamic DNS
@@ -13,19 +13,19 @@ change when, for example, ISP router resets.
 
 Thus, although devices at IP address dynamically allocated by ISP are accessible
 from the Internet, their address is not stable and may change at any time to
-unpredictable values.
+some unpredictable values.
 
 Dynamic DNS allows binding a stable DNS host name with a dynamic IP
 address. When dynamic IP address changes, Dynamic DNS service updates DNS record
 to the new IP address value.
 
-## Dynamic DNS abbreviations
+## “Dynamic DNS” abbreviations
 
-Dynamic DNS is often abbreviated as DDNS. In this note I am intentionally
-avoiding this abbreviation as it is also used for Decentralised DNS that is a
-completely different technology. Another term that is often used in
+Dynamic DNS term is often abbreviated as DDNS. In the current post this
+abbreviation is intentionally avoided as it is also used for Decentralised DNS
+that is a completely different technology. Another term that is often used in
 DynDNS. Unfortunately DynDNS is also a name of a particular Dynamic DNS service
-provider. Therefore the full _Dynamic DNS_ name is used here instead of its
+provider. Therefore the full _Dynamic DNS_ term is used here instead of its
 ambiguous abbreviated variants.
 
 ## How it works
@@ -37,8 +37,8 @@ The client connected to dynamic IP address is responsible for updating its DNS
 records using Dynamic DNS service API.
 
 The client can find its IP address from its network driver if it is connected
-directly to ISP, or by queering an external server if it is connected via router
-NAT (e.g. typing "what is my IP" in Google prompt).
+directly to ISP, or by querying an external server if it is connected via router
+NAT (e.g. typing “what is my IP” in Google prompt).
 
 ## Dynamic DNS client software
 
@@ -50,100 +50,12 @@ There are three main options of Dynamic DNS client software:
 ### Embedded Router Software
 
 The simplest approach is to use embedded router software. Dynamic DNS APIs are
-not standard and router software has limited number of the supported Dynamic DNS
-providers. Use router approach if it supports utilised Dynamic DNS provider.
+not standard and a typical router software has a limited number of the supported
+Dynamic DNS providers. Use router software approach if it supports required
+Dynamic DNS provider.
 
-### Manually Installed Application
-
-Many Dynamic DNS service providers also provide a client application responsible
-for DNS records updates. Most such software are propriety and closed-source.
-
-Tow popular open source packages of Dynamic DNS client software are:
-
-* [ddclient](https://ddclient.net/)
-* [Small and Simple DDNS Client](https://troglobit.com/projects/inadyn/)
-
-#### ddclient configuration example
-
-```bash
-sudo apt install ddclient
-```
-
-<figure>
-  <Image
-    src="static/ddclient-config-1-provider.png"
-    alt=""
-    className="!rounded-none"
-    priority
-  />
-  <figcaption>
-    <>Configuring ddclient (Screen 1)</>
-  </figcaption>
-</figure>
-
-<figure>
-  <Image
-    src="static/ddclient-config-2-password.png"
-    alt=""
-    className="!rounded-none"
-    priority
-  />
-  <figcaption>
-    <>Configuring ddclient (Screen 2)</>
-  </figcaption>
-</figure>
-
-<figure>
-  <Image
-    src="static/ddclient-config-3-ip-method-desc.png"
-    alt=""
-    className="!rounded-none"
-    priority
-  />
-  <figcaption>
-    <>Configuring ddclient (Screen 3)</>
-  </figcaption>
-</figure>
-
-<figure>
-  <Image
-    src="static/ddclient-config-4-ip-method-select.png"
-    alt=""
-    className="!rounded-none"
-    priority
-  />
-  <figcaption>
-    <>Configuring ddclient (Screen 4)</>
-  </figcaption>
-</figure>
-
-<figure>
-  <Image
-    src="static/ddclient-config-5-host-names.png"
-    alt=""
-    className="!rounded-none"
-    priority
-  />
-  <figcaption>
-    <>Configuring ddclient (Screen 5)</>
-  </figcaption>
-</figure>
-
-* https://no-ip.com/
-* https://freedns.afraid.org/
-* https://www.duckdns.org/
-* https://www.dyndns.com/
-* https://www.easydns.com/
-* https://www.dslreports.com/
-* https://www.zoneedit.com/
-
-Regarding Google Domains, as of writing this article, already existing domains
-still work. However, on September 7, 2023, Squarespace acquired all domain
-registrations and related customer accounts from Google Domains. Customers and
-domains will be transitioned over the next few months. It is still uncertain if
-Squarespace is going to offer a Dynamic DNS service.
-
-### Embedded Router Software
+The following figure shows an example of the router Dynamic DNS software
+configuration page:
 
 <figure>
   <Image
@@ -157,6 +69,122 @@ Squarespace is going to offer a Dynamic DNS service.
   </figcaption>
 </figure>
 
+### Manually Installed Application
+
+Many Dynamic DNS service providers also provide a client application responsible
+for DNS records updates. Most such software are propriety and closed-source.
+
+Two popular open source packages of Dynamic DNS client software are:
+
+* [ddclient](https://github.com/ddclient/ddclient)
+* [Small and Simple DDNS Client](https://github.com/troglobit/inadyn)
+* [dnsupdate](https://github.com/lopsided98/dnsupdate)
+
+`ddclient` is included in Debian distributive and its derivative such as
+Raspberry Pi OS or Ubuntu.
+
+#### ddclient installation and configuration
+
+On Debian systems `ddclient` can be installed with the following command:
+
+```bash
+sudo apt install ddclient
+# as of writing, current ddclient version is 3.9.1
+```
+
+When running above apt command, the installer should run the following sequence
+of configuration windows:
+
+<figure>
+  <Image
+    src="static/ddclient-config-1-provider.png"
+    alt=""
+    className="!rounded-none"
+    priority
+  />
+  <figcaption>
+    <>Dynamic DNS Provider (Screen 1)</>
+  </figcaption>
+</figure>
+
+<figure>
+  <Image
+    src="static/ddclient-config-2-3-password.png"
+    alt=""
+    className="!rounded-none"
+    priority
+  />
+  <figcaption>
+    <>User name and password (Screen 2 and 3)</>
+  </figcaption>
+</figure>
+
+<figure>
+  <Image
+    src="static/ddclient-config-4-ip-method-desc.png"
+    alt=""
+    className="!rounded-none"
+    priority
+  />
+  <figcaption>
+    <>IP Address Discovery Methods Description (Screen 3)</>
+  </figcaption>
+</figure>
+
+<figure>
+  <Image
+    src="static/ddclient-config-5-ip-method-select.png"
+    alt=""
+    className="!rounded-none"
+    priority
+  />
+  <figcaption>
+    <>IP Address Discovery Method Selection (Screen 4)</>
+  </figcaption>
+</figure>
+
+<figure>
+  <Image
+    src="static/ddclient-config-6-host-names.png"
+    alt=""
+    className="!rounded-none"
+    priority
+  />
+  <figcaption>
+    <>Actual Host Names (Screen 5)</>
+  </figcaption>
+</figure>
+
+The resulting configuration files is located at `/etc/ddclient.conf`.
+
+#### Dynamic DNS services supported by ddclient
+
+The following services are supported directly via configuration dialogue:
+
+* https://no-ip.com/
+* https://freedns.afraid.org/
+* https://www.duckdns.org/
+* https://www.dyndns.com/
+* https://www.easydns.com/
+* https://www.dslreports.com/
+* https://www.zoneedit.com/
+
+Regarding Google Domains&nbsp;– as of writing this article, already registered
+domains are still working. However, on September 7, 2023, Squarespace acquired
+all domain registrations and related customer accounts from Google
+Domains. Customers and domains will be transitioned over the next few months. It
+is still uncertain if Squarespace is going to offer a Dynamic DNS service and
+keep prices reasonable.
+
+There are many other [services
+supported](https://github.com/ddclient/ddclient#supported-services). See
+[configuration documentation](https://ddclient.net/#configuration) for further
+details.
+
 ### Custom script
+
+The last and the most flexible option is to manually implement Dynamic DNS
+client script. The following repository is an example of a such script in Python
+for porkbun DNS service:
 
 https://github.com/porkbundomains/porkbun-dynamic-dns-python
