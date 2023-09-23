@@ -3,6 +3,7 @@ title: Dynamic DNS
 authors:
   - Victor Rybynok
 datePublished: '2023-09-21'
+dateUpdated: '2023-02-22'
 description:
   Collection of Dynamic DNS user configuration hints and resource references.
 categories: [dns, dhcp, dynamc dns]
@@ -75,7 +76,7 @@ configuration page:
 ### Manually Installed Application
 
 Many Dynamic DNS service providers also provide a client application responsible
-for DNS records updates. Most such software are propriety and closed-source.
+for DNS records updates. Most such software are proprietary and closed-source.
 
 Three popular open source packages of Dynamic DNS client software are:
 
@@ -91,8 +92,8 @@ Raspberry Pi OS or Ubuntu.
 On Debian systems `ddclient` can be installed with the following command:
 
 ```bash
-sudo apt install ddclient
 # as of writing, current ddclient version is 3.9.1
+sudo apt install ddclient
 ```
 
 When running above apt command, the installer should present the following
@@ -118,7 +119,7 @@ sequence of configuration screens:
     priority
   />
   <figcaption>
-    <>User name and password (Screen 2 and 3)</>
+    <>User name and password (Screens 2 and 3)</>
   </figcaption>
 </figure>
 
@@ -186,6 +187,6 @@ details.
 
 ### Custom script
 
-The last and the most flexible option is to implement Dynamic DNS client custom
+The last and the most flexible option is to implement a custom Dynamic DNS client
 script. The following repository is an example of a such script in Python for
 porkbun DNS service: [porkbun-dynamic-dns-python](https://github.com/porkbundomains/porkbun-dynamic-dns-python)
