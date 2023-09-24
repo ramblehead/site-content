@@ -1,0 +1,43 @@
+---
+title: Reverse Proxy Hints and References
+dateUpdated: '2023-09-24'
+description:
+  Collection of Reverse Proxy configuration hints and resource references.
+---
+
+## Reverse Proxy Options
+
+The following reverse proxy options seem to be the most popular at the moment:
+
+* [Apache](https://httpd.apache.org/)
+* [Nginx](https://www.nginx.com/) (pronounced "Engine X")
+* [Caddy](https://caddyserver.com/)
+* [HAProxy](https://www.haproxy.com/)
+* [Envoy](https://www.envoyproxy.io/)
+
+
+Apache is the oldest and the oldest and the most customisable web server.
+
+Nginx is a little younger than Apache, also very customisable and has a better
+performance and memory footprint than Apache.
+
+Caddy is a youngest web server and the most user-friendly.
+
+All above solutions are web servers that can also be used as reverse proxies or
+load balancers.
+
+HAProxy and Envoy are load balancers that can also be used as reverse proxies.
+
+HAProxy is advertised as the fastest possible solution that outperforms Nginx.
+
+Envoy supports gRPC requests via REST API (HTTP 1.1).
+
+In my experience I only used Apache and Caddy. All above statements are my
+conclusions derived from various internet forums and blog posts.
+
+Currently, for my self-hosted projects I use Caddy - mostly because is has the
+simplest HTTPS configuration I have seen.
+
+There are also some posts suggesting to use [Nginx Proxy
+Manager](https://nginxproxymanager.com/) (aka NPM) to simplify Nginx
+configuration on-par with Caddy.
