@@ -1,0 +1,56 @@
+---
+title: SSL Certificates with DNS Wild Wild Card
+authors:
+  - Victor Rybynok
+draft: true
+datePublished: '2023-12-03'
+dateUpdated: '2023-12-03'
+description:
+  Self-hosted wildcard DNS configuration with multiple servers on a single IP
+  with similar port numbers (e.g. multiple https on different subdomains) and SSL
+  termination.
+categories: [dns, wildcard, multi-tenant, ssl, tsl, dns-01, Letsencrypt, ACME, Lego]
+---
+
+Instructions are tested on Raspberry Pi OS (64-bit)
+
+For conveniently serving multi-tenant self-hosted applications with SSL
+certificates one needs a DNS provider that supports the following features:
+
+ * Dynamic DNS
+ * Wildcard Subdomain Addresses
+ * DNS-01 challenge API [supported by Lego](https://go-acme.github.io/lego/dns/)
+
+Dynamic DNS configuration process has been described in [Dynamic
+DNS](/blog/dynamic-dns) post.
+
+Wildcard Subdomain Addresses and DNS-01 challenge configurations are closely
+related subjects. Therefore they are both described in this post.
+
+In this post Google Domains is used as an example. However, for the new
+deployments Google Domains may not be used as it [will no longer
+offer](https://support.google.com/domains/answer/13689670?authuser=0&hl=en-GB)
+new domain registrations.
+
+## Installing mock web-servers
+
+Two Next.js web application are used to emulate multi-tenant deployment&nbsp;–
+one hosted via node.js and another statically-built:
+
+ * Next.js application for mock web site
+ * Next.js static for error pages
+
+## Configuring Router Port Forwarding
+
+## Installing and Configuring Nginx
+
+## Installing and Configuring Lego
+
+ * Install and configure golang from binary distro
+ * Compile and install lego
+ * Use lego to obtain wildcard subdomain certificates using DNS-01 challenge
+
+## Installing and Configuring systemd Lego timer
+
+https://www.mslinn.com/blog/2022/06/15/certbot.html<br />
+https://www.mslinn.com/blog/2023/03/02/lego.html
