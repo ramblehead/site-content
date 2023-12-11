@@ -12,10 +12,11 @@ description:
 categories: [dns, wildcard, multi-tenant, ssl, tsl, dns-01, Letsencrypt, ACME, Lego]
 ---
 
-Instructions are tested on Raspberry Pi OS (64-bit)
+These instructions are tested on Raspberry Pi OS (64-bit), but should be
+compatible with any Debian-based Linux.
 
-For conveniently serving multi-tenant self-hosted applications with SSL
-certificates one needs a DNS provider that supports the following features:
+For serving multi-tenant self-hosted applications with SSL certificates it is
+possible to use a DNS provider that supports the following features:
 
  * Dynamic DNS
  * Wildcard Subdomain Addresses
@@ -24,21 +25,79 @@ certificates one needs a DNS provider that supports the following features:
 Dynamic DNS configuration process has been described in [Dynamic
 DNS](/blog/dynamic-dns) post.
 
-Wildcard Subdomain Addresses and DNS-01 challenge configurations are closely
-related subjects. Therefore they are both described in this post.
+Wildcard Subdomain Address and DNS-01 challenge configurations are closely
+related subjects. Therefore they are both described in the current post.
 
-In this post Google Domains is used as an example. However, for the new
-deployments Google Domains may not be used as it [will no longer
+However Google Domains is used as an example, for the new deployments Google
+Domains may not be used as it [will no longer
 offer](https://support.google.com/domains/answer/13689670?authuser=0&hl=en-GB)
 new domain registrations.
 
 ## Installing mock web-servers
 
-Two Next.js web application are used to emulate multi-tenant deployment&nbsp;–
-one hosted via node.js and another statically-built:
+Two Next.js web servers are used to emulate multi-tenant deployment&nbsp;– one
+hosted via node.js and another built statically:
 
  * Next.js application for mock web site
  * Next.js static for error pages
+
+### Installing Next.js application
+
+```bash
+$ npx create-next-app@latest
+```
+
+Interactive prompts and possible output:
+
+```
+Need to install the following packages:
+  create-next-app@14.0.4
+Ok to proceed? (y) y
+✔ What is your project named? … mock-web-site
+✔ Would you like to use TypeScript? … No / Yes
+✔ Would you like to use ESLint? … No / Yes
+✔ Would you like to use Tailwind CSS? … No / Yes
+✔ Would you like to use `src/` directory? … No / Yes
+✔ Would you like to use App Router? (recommended) … No / Yes
+✔ Would you like to customize the default import alias (@/*)? … No / Yes
+Creating a new Next.js app in /path/to/mock-web-site.
+
+Using npm.
+
+Initializing project with template: app-tw
+
+
+Installing dependencies:
+- react
+- react-dom
+- next
+
+Installing devDependencies:
+- typescript
+- @types/node
+- @types/react
+- @types/react-dom
+- autoprefixer
+- postcss
+- tailwindcss
+- eslint
+- eslint-config-next
+
+
+added 333 packages, and audited 334 packages in 32s
+
+117 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+Initialized a git repository.
+
+Success! Created mock-web-site at /path/to/mock-web-site
+```
+
+It is assumed here that [node.js](https://github.com/nvm-sh/nvm) and
+[yarn](https://classic.yarnpkg.com/en/docs/install) classic are already
+installed on the host computer.
 
 ## Configuring Router Port Forwarding
 
