@@ -12,11 +12,11 @@ description:
 categories: [dns, wildcard, multi-tenant, ssl, tsl, dns-01, Letsencrypt, ACME, Lego]
 ---
 
-These instructions are tested on Raspberry Pi OS (64-bit), but should be
+These instructions were tested on Raspberry Pi OS (64-bit), but should be
 compatible with any Debian-based Linux.
 
-For serving multi-tenant self-hosted applications with SSL certificates it is
-possible to use a DNS provider that supports the following features:
+For serving multi-tenant self-hosted applications with a single SSL certificate
+it is possible to use a DNS provider that supports the following features:
 
  * Dynamic DNS
  * Wildcard Subdomain Addresses
@@ -26,10 +26,11 @@ Dynamic DNS configuration process has been described in [Dynamic
 DNS](/blog/dynamic-dns) post.
 
 Wildcard Subdomain Address and DNS-01 challenge configurations are closely
-related subjects. Therefore they are both described in the current post.
+related subjects. Therefore their configurations are both described in the
+current post.
 
-However Google Domains is used as an example, for the new deployments Google
-Domains may not be used as it [will no longer
+However Google Domains is used here as an example, for the new deployments
+Google Domains may not be used as it [will no longer
 offer](https://support.google.com/domains/answer/13689670?authuser=0&hl=en-GB)
 new domain registrations.
 
@@ -43,11 +44,16 @@ hosted via node.js and another built statically:
 
 ### Installing Next.js application
 
+Run the following command to install and setup a latest version of the Next.js
+application:
+
+
 ```bash
 $ npx create-next-app@latest
 ```
 
-Interactive prompts and possible output:
+The following are the interactive prompts and possible output of the above
+`create-next-app` command:
 
 ```
 Need to install the following packages:
