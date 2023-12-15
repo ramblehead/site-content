@@ -1,0 +1,121 @@
+---
+title: SSL Certificates with DNS Wild Wild Card
+authors:
+  - Victor Rybynok
+draft: true
+datePublished: '2023-12-03'
+dateUpdated: '2023-12-03'
+description:
+  Self-hosted wildcard DNS configuration with multiple servers on a single IP
+  with similar port numbers (e.g. multiple https on different subdomains) and SSL
+  termination.
+categories: [dns, wildcard, multi-tenant, ssl, tsl, dns-01, Letsencrypt, ACME, Lego]
+---
+
+These instructions were tested on Raspberry Pi OS (64-bit), but should be
+compatible with any Debian-based Linux.
+
+For serving multi-tenant self-hosted applications with a single SSL certificate
+it is possible to use a DNS provider that supports the following features:
+
+ * Dynamic DNS
+ * Wildcard Subdomain Addresses
+ * DNS-01 challenge API [supported by Lego](https://go-acme.github.io/lego/dns/)
+
+Dynamic DNS configuration process has been described in [Dynamic
+DNS](/blog/dynamic-dns) post.
+
+Wildcard Subdomain Address and DNS-01 challenge configurations are closely
+related subjects. Therefore their configurations are both described in the
+current post.
+
+However Google Domains is used here as an example, for the new deployments
+Google Domains may not be used as it [will no longer
+offer](https://support.google.com/domains/answer/13689670?authuser=0&hl=en-GB)
+new domain registrations.
+
+## Installing mock web-servers
+
+Two Next.js web servers are used to emulate multi-tenant deployment&nbsp;– one
+hosted via node.js and another built statically:
+
+ * Next.js application for mock web site
+ * Next.js static for error pages
+
+### Installing Next.js application
+
+Run the following command to install and setup a latest version of the Next.js
+application:
+
+
+```bash
+$ npx create-next-app@latest
+```
+
+The following are the interactive prompts and possible output of the above
+`create-next-app` command:
+
+```
+Need to install the following packages:
+  create-next-app@14.0.4
+Ok to proceed? (y) y
+✔ What is your project named? … mock-web-site
+✔ Would you like to use TypeScript? … No / Yes
+✔ Would you like to use ESLint? … No / Yes
+✔ Would you like to use Tailwind CSS? … No / Yes
+✔ Would you like to use `src/` directory? … No / Yes
+✔ Would you like to use App Router? (recommended) … No / Yes
+✔ Would you like to customize the default import alias (@/*)? … No / Yes
+Creating a new Next.js app in /path/to/mock-web-site.
+
+Using npm.
+
+Initializing project with template: app-tw
+
+
+Installing dependencies:
+- react
+- react-dom
+- next
+
+Installing devDependencies:
+- typescript
+- @types/node
+- @types/react
+- @types/react-dom
+- autoprefixer
+- postcss
+- tailwindcss
+- eslint
+- eslint-config-next
+
+
+added 333 packages, and audited 334 packages in 32s
+
+117 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+Initialized a git repository.
+
+Success! Created mock-web-site at /path/to/mock-web-site
+```
+
+It is assumed here that [node.js](https://github.com/nvm-sh/nvm) and
+[yarn](https://classic.yarnpkg.com/en/docs/install) classic are already
+installed on the host computer.
+
+## Configuring Router Port Forwarding
+
+## Installing and Configuring Nginx
+
+## Installing and Configuring Lego
+
+ * Install and configure golang from binary distro
+ * Compile and install lego
+ * Use lego to obtain wildcard subdomain certificates using DNS-01 challenge
+
+## Installing and Configuring systemd Lego timer
+
+https://www.mslinn.com/blog/2022/06/15/certbot.html<br />
+https://www.mslinn.com/blog/2023/03/02/lego.html
