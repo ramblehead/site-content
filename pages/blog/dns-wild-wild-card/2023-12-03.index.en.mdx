@@ -42,33 +42,71 @@ hosted via node.js and another built statically:
  * Next.js application for mock web site
  * Next.js static for error pages
 
-### Installing Next.js application
+### Installing yarn berry
+
+It is assumed here that [node.js](https://github.com/nvm-sh/nvm) and [yarn
+classic](https://classic.yarnpkg.com/en/docs/install) are already installed on
+the host computer. If yarn classic is not installed, run the following command
+to install it:
+
+```bash
+$ npm install yarn -g
+```
+
+[corepack](https://github.com/nodejs/corepack) is required to install
+project-local [yarn berry](https://yarnpkg.com/):
+
+```bash
+$ corepack enable
+```
+
+As of the time of writing, I experienced some problems with yarn versions `4.x`,
+therefore in this post version `3.x` is used:
+
+```bash
+$ yarn set version 3.x
+```
+
+Check yarn berry release [page](https://github.com/yarnpkg/berry/releases) or
+use the following command to list available yarn berry versions:
+
+```bash
+$ git ls-remote https://github.com/yarnpkg/berry.git --tags @yarnpkg/cli/* | \
+      grep -o @yarnpkg/cli/.* | \
+      grep -o [^/]*[[:digit:]]$
+```
 
 Run the following command to install and setup a latest version of the Next.js
 application:
 
+### Installing Next.js application for mock web site
 
 ```bash
-$ npx create-next-app@latest
+$ mkdir web-site
+$ cd web-site
+$ yarn dlx create-next-app@latest .
 ```
 
 The following are the interactive prompts and possible output of the above
 `create-next-app` command:
 
 ```
-Need to install the following packages:
-  create-next-app@14.0.4
-Ok to proceed? (y) y
-✔ What is your project named? … mock-web-site
+➤ YN0000: └ Completed in 1s 2ms
+➤ YN0000: ┌ Fetch step
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Link step
+➤ YN0000: └ Completed
+➤ YN0000: Done in 1s 63ms
+
 ✔ Would you like to use TypeScript? … No / Yes
 ✔ Would you like to use ESLint? … No / Yes
 ✔ Would you like to use Tailwind CSS? … No / Yes
 ✔ Would you like to use `src/` directory? … No / Yes
 ✔ Would you like to use App Router? (recommended) … No / Yes
 ✔ Would you like to customize the default import alias (@/*)? … No / Yes
-Creating a new Next.js app in /path/to/mock-web-site.
+Creating a new Next.js app in /path/to/web-site.
 
-Using npm.
+Using yarn.
 
 Initializing project with template: app-tw
 
@@ -89,21 +127,79 @@ Installing devDependencies:
 - eslint
 - eslint-config-next
 
-
-added 333 packages, and audited 334 packages in 32s
-
-117 packages are looking for funding
-  run `npm fund` for details
-
-found 0 vulnerabilities
+➤ YN0000: ┌ Resolution step
+➤ YN0032: │ fsevents@npm:2.3.3: Implicit dependencies on node-gyp are discouraged
+➤ YN0000: └ Completed in 7s 796ms
+➤ YN0000: ┌ Fetch step
+➤ YN0013: │ wrap-ansi@npm:8.1.0 can't be found in the cache and will be fetched from the remote registry
+➤ YN0013: │ wrappy@npm:1.0.2 can't be found in the cache and will be fetched from the remote registry
+➤ YN0013: │ yallist@npm:4.0.0 can't be found in the cache and will be fetched from the remote registry
+➤ YN0013: │ yaml@npm:2.3.4 can't be found in the cache and will be fetched from the remote registry
+➤ YN0013: │ yocto-queue@npm:0.1.0 can't be found in the cache and will be fetched from the remote registry
+➤ YN0000: └ Completed in 0s 585ms
+➤ YN0000: ┌ Link step
+➤ YN0000: │ ESM support for PnP uses the experimental loader API and is therefore experimental
+➤ YN0000: └ Completed in 1s 5ms
+➤ YN0000: Done with warnings in 9s 471ms
 Initialized a git repository.
 
-Success! Created mock-web-site at /path/to/mock-web-site
+Success! Created web-site at /path/to/web-site
 ```
 
-It is assumed here that [node.js](https://github.com/nvm-sh/nvm) and
-[yarn](https://classic.yarnpkg.com/en/docs/install) classic are already
-installed on the host computer.
+Lock yarn berry version:
+
+```bash
+$ yarn set version 3.x
+```
+
+Many node.js packages already work with [Yarn
+Plug'n'Play](https://yarnpkg.com/features/pnp), including Next.js. However,
+there may still be packages that are conflicting with Yarn Plug'n'Play. To
+support such packages add the [following
+line](https://yarnpkg.com/configuration/yarnrc#nodeLinker) to the top of
+`/path/to/web-site/.yarnrc.yml` file:
+
+```
+nodeLinker: node-modules
+```
+
+After changing yarn configuration run install command:
+
+```
+$ yarn install
+```
+
+Add the [following
+lines](https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored)
+to `/path/to/web-site/.gitignore` file (assuming
+[zero-installs](https://yarnpkg.com/features/caching#zero-installs)):
+
+```
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+```
+
+The newly created `web-site` can now be build and deployed on localhost:
+
+```
+$ cd /path/to/web-site
+$ yarn build
+$ yarn start
+```
+
+### Next.js static for error pages
+
+Next.js static installation instruction are the same as Next.js application
+outlined above.
+
+Then navigate browser to [http://localhost:3000/](http://localhost:3000/) and it
+should display default Next.js root index page. We are going to use this page as
+our self-hosted site.
 
 ## Configuring Router Port Forwarding
 
