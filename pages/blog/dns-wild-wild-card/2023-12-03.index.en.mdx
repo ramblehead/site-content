@@ -18,33 +18,33 @@ This configuration example was tested on Raspberry Pi OS (64-bit), but should be
 compatible with any Debian-based Linux.
 
 For serving multi-tenant self-hosted applications with a single SSL certificate
-it is possible to use a DNS provider that supports the following features:
+one might use a DNS provider that supports the following features:
 
  * Dynamic DNS
  * Wildcard Subdomain Addresses
  * DNS-01 challenge API [supported by Lego](https://go-acme.github.io/lego/dns/)
 
 Dynamic DNS configuration process has been described in [Dynamic
-DNS](/blog/dynamic-dns) post.
+DNS](/blog/dynamic-dns) article.
 
 Wildcard Subdomain Address and DNS-01 challenge configurations are closely
 related subjects. Therefore their configurations are both described in the
-current post.
+current article.
 
 However Google Domains is used here as an example, for the new deployments
 Google Domains may not be used as it [will no longer
 offer](https://support.google.com/domains/answer/13689670?authuser=0&hl=en-GB)
 new domain registrations.
 
-[nginx](https://www.nginx.com/) web server is used as a reverse proxy and as SSL
-termination. [LEGO](https://github.com/go-acme/lego) (Let's Encrypt client and
-ACME library written in Go) is used to obtain SSL certificates and
-keys. [systemd
-timer](https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html)
+[NGINX](https://www.nginx.com/) is used as a reverse proxy and as SSL
+termination.<br />
+[LEGO](https://github.com/go-acme/lego) is used for obtaining SSL certificates
+and keys.<br />
+[systemd timer](https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html)
 is used to automate SSL certificates and keys renewals before they expire.
 
-For simplicity it is assumed that all software are running on the same server
-(Raspberry Pi in my case).
+For simplicity it is assumed that all software are running on the same host
+(Raspberry Pi 4 in my case).
 
 ## Mock web-server and error page
 
@@ -54,27 +54,28 @@ host is already running a web-server such as Next.js at the following address:
 [http://localhost:3000/](http://localhost:3000/)
 
 It is also assumed that there is a static HTML page on the host file system that
-holds page not found error:
+holds page not found error. For example:
 
 ```
-/path/to/errors/404.html
+/home/rh/artizanya/packages/wui-errors/out/404.html
 ```
 
-I might write another post on setting-up Next.js 14 as a web server and as a
-static pages generator if there is a need for such instructions.
+(I might write another article on setting-up Next.js 14 as a web server and as a
+static pages generator if there is a need for such guidelines.)
 
 ## Configuring Router Port Forwarding
 
-Port forwarding configuration depends on the Internet provider and the router
-used. In this post, it is assumed that ports `80` and `443` are forwarded to the
-similar ports and to the internal IP address that runs nginx server.
+The configuration of port forwarding depends on the Internet provider and the
+router in use. In this article, it is assumed that ports `80` and `443` are
+forwarded to the corresponding ports at the internal IP address running the
+NGINX server.
 
 
 ## Installing LEGO
 
-Refer to your DNS provider documentation and to LEGO DNS Providers
-[documentation](https://go-acme.github.io/lego/dns/) to configure wildcard
-subdomain addresses DNS and to obtain API key for DNS-01 challenge.
+Refer to your DNS provider documentation and to [LEGO DNS Providers
+documentation](https://go-acme.github.io/lego/dns/) to configure wildcard
+subdomain addresses and to obtain API key for DNS-01 challenge.
 
 At the time of writing, LEGO is relatively new, and the versions included with
 most Linux distributions are not up-to-date with the current release. The best
@@ -83,17 +84,17 @@ written in Golang and requires a fairly recent version of Golang, which might
 not be available in a Linux distribution.
 
 To compile LEGO from the source, Golang can be installed from its original
-binary distribution by following the [official
+binary distribution by following [the official
 instructions](https://go.dev/doc/install).
 
 With Golang installed, LEGO can be [built and
-installed](https://go-acme.github.io/lego/installation/) with the following
-command:
+installed](https://go-acme.github.io/lego/installation/#from-sources) using the
+following command:
 
-```
-# go1.17+
-# environment variable: GO111MODULE=on
-go install github.com/go-acme/lego/v4/cmd/lego@latest
+```shell
+$ # go1.17+
+$ # environment variable: GO111MODULE=on
+$ go install github.com/go-acme/lego/v4/cmd/lego@latest
 ```
 
 ## Getting SSL keys and certificates using LEGO
@@ -101,24 +102,18 @@ go install github.com/go-acme/lego/v4/cmd/lego@latest
 The following command is an example of how LEGO may be used for DNS-01 challenge
 and wildcard subdomain:
 
-```
-lego --accept-tos \
-     --dns=googledomains \
-     --domains='artizanya.com' \
-     --domains='*.artizanya.com' \
-     --email='rh@artizanya.com' \
-     run
-```
-
-## Installing and Configuring Nginx
-
-```
-sudo nginx -t
+```shell
+$ cd /home/rh
+$ mkdir -p artizanya-ssl && cd artizanya-ssl
+$ lego --accept-tos \
+       --dns=googledomains \
+       --domains='artizanya.com' \
+       --domains='*.artizanya.com' \
+       --email='rh@artizanya.com' \
+       run
 ```
 
-```
-sudo systemctl reload nginx
-```
+## Installing and Configuring NGINX
 
 ```
 server {
@@ -143,17 +138,7 @@ server {
   server_name *.artizanya.com;
 
   root /home/rh/artizanya/packages/wui-errors/out;
-  # index index.html;
   index 404.html;
-
-  # location / {
-  #   proxy_pass http://localhost:4000;
-  #   proxy_http_version 1.1;
-  #   proxy_set_header Upgrade $http_upgrade;
-  #   proxy_set_header Connection 'upgrade';
-  #   proxy_set_header Host $host;
-  #   proxy_cache_bypass $http_upgrade;
-  # }
 }
 
 server {
@@ -168,11 +153,6 @@ server {
 
   server_name artizanya.com;
 
-  # if_modified_since off;
-  # add_header Last-Modified "";
-
-  # add_header Cache-Control no-cache;
-
   location / {
     proxy_pass http://localhost:3000;
     proxy_http_version 1.1;
@@ -184,8 +164,19 @@ server {
 }
 ```
 
+```shell
+$ sudo nginx -t
+```
+
+```shell
+$ sudo systemctl reload NGINX
+```
+
+
 ## Installing and Configuring systemd Lego timer
 
-https://www.mslinn.com/blog/2022/07/08/reverse-proxy.html<br />
-https://www.mslinn.com/blog/2022/06/15/certbot.html<br />
-https://www.mslinn.com/blog/2023/03/02/lego.html
+## References
+
+- [Using Nginx As a Reverse Proxy With SSL](https://www.mslinn.com/blog/2022/07/08/reverse-proxy.html)
+- [Creating and Renewing Letsencrypt Wildcard SSL Certificates](https://www.mslinn.com/blog/2022/06/15/certbot.html)
+- [Letsencrypt/ACME Wildcard SSL Certificates by Lego](https://www.mslinn.com/blog/2023/03/02/lego.html)
