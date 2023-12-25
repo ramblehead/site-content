@@ -179,6 +179,10 @@ server {
 ```
 
 ```shell
+$ ln -s /home/rh/artizanya/utils/ssl/nginx/sites-available/artizanya.com /etc/nginx/sites-enabled
+```
+
+```shell
 $ sudo nginx -t
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
@@ -186,6 +190,10 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 
 ```shell
 $ sudo systemctl reload nginx
+```
+
+```shell
+$ journalctl --no-pager --follow -u nginx
 ```
 
 
