@@ -103,7 +103,7 @@ The following command is an example of how LEGO may be used for DNS-01 challenge
 and wildcard subdomain:
 
 ```shell
-$ mkdir -pv ssl && cd ssl
+$ cd /home/rh/artizanya/utils/ssl
 $ lego --accept-tos \
        --dns=googledomains \
        --domains='artizanya.com' \
@@ -118,7 +118,8 @@ The following commands could be used to obtain NGINX files required for Let's
 Encrypt SSL:
 
 ```shell
-$ mkdir -pv ssl/nginx-letsencrypt && cd ssl/nginx-letsencrypt
+$ cd /home/rh/artizanya/utils/ssl
+$ mkdir -pv nginx/letsencrypt && cd nginx/letsencrypt
 $ wget --backups=1 https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
 $ wget --backups=1 https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem
 ```
@@ -126,7 +127,9 @@ $ wget --backups=1 https://raw.githubusercontent.com/certbot/certbot/master/cert
 
 ## Installing and Configuring NGINX
 
-```
+```nginxconf
+# /home/rh/artizanya/utils/ssl/nginx/sites-available/artizanya.com
+
 server {
   listen 80 default_server;
   listen [::]:80 default_server;
@@ -140,11 +143,11 @@ server {
   listen 443 ssl default_server;
   listen [::]:443 ssl default_server;
 
-  ssl_certificate /home/rh/tsl/.lego/certificates/artizanya.com.crt;
-  ssl_certificate_key /home/rh/tsl/.lego/certificates/artizanya.com.key;
-  ssl_trusted_certificate /home/rh/tsl/.lego/certificates/artizanya.com.issuer.crt;
-  include /home/rh/tsl/nginx-letsencrypt/options-ssl-nginx.conf;
-  ssl_dhparam /home/rh/tsl/nginx-letsencrypt/ssl-dhparams.pem;
+  ssl_certificate /home/rh/artizanya/utils/ssl/.lego/certificates/artizanya.com.crt;
+  ssl_certificate_key /home/rh/artizanya/utils/ssl/.lego/certificates/artizanya.com.key;
+  ssl_trusted_certificate /home/rh/artizanya/utils/ssl/.lego/certificates/artizanya.com.issuer.crt;
+  include /home/rh/artizanya/utils/ssl/nginx/letsencrypt/options-ssl-nginx.conf;
+  ssl_dhparam /home/rh/artizanya/utils/ssl/nginx/letsencrypt/ssl-dhparams.pem;
 
   server_name *.artizanya.com;
 
@@ -156,11 +159,11 @@ server {
   listen 443 ssl;
   listen [::]:443 ssl;
 
-  ssl_certificate /home/rh/tsl/.lego/certificates/artizanya.com.crt;
-  ssl_certificate_key /home/rh/tsl/.lego/certificates/artizanya.com.key;
-  ssl_trusted_certificate /home/rh/tsl/.lego/certificates/artizanya.com.issuer.crt;
-  include /home/rh/tsl/nginx-letsencrypt/options-ssl-nginx.conf;
-  ssl_dhparam /home/rh/tsl/nginx-letsencrypt/ssl-dhparams.pem;
+  ssl_certificate /home/rh/artizanya/utils/ssl/.lego/certificates/artizanya.com.crt;
+  ssl_certificate_key /home/rh/artizanya/utils/ssl/.lego/certificates/artizanya.com.key;
+  ssl_trusted_certificate /home/rh/artizanya/utils/ssl/.lego/certificates/artizanya.com.issuer.crt;
+  include /home/rh/artizanya/utils/ssl/nginx/letsencrypt/options-ssl-nginx.conf;
+  ssl_dhparam /home/rh/artizanya/utils/ssl/nginx/letsencrypt/ssl-dhparams.pem;
 
   server_name artizanya.com;
 
@@ -182,7 +185,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```
 
 ```shell
-$ sudo systemctl reload NGINX
+$ sudo systemctl reload nginx
 ```
 
 
