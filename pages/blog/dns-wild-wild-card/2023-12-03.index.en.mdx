@@ -103,8 +103,7 @@ The following command is an example of how LEGO may be used for DNS-01 challenge
 and wildcard subdomain:
 
 ```shell
-$ cd /home/rh
-$ mkdir -p artizanya-ssl && cd artizanya-ssl
+$ mkdir -pv ssl && cd ssl
 $ lego --accept-tos \
        --dns=googledomains \
        --domains='artizanya.com' \
@@ -112,6 +111,18 @@ $ lego --accept-tos \
        --email='rh@artizanya.com' \
        run
 ```
+
+## Getting NGINX files required for Let's Encrypt SSL
+
+The following commands could be used to obtain NGINX files required for Let's
+Encrypt SSL:
+
+```shell
+$ mkdir -pv ssl/nginx-letsencrypt && cd ssl/nginx-letsencrypt
+$ wget --backups=1 https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
+$ wget --backups=1 https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem
+```
+
 
 ## Installing and Configuring NGINX
 
@@ -166,6 +177,8 @@ server {
 
 ```shell
 $ sudo nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```
 
 ```shell
@@ -180,3 +193,4 @@ $ sudo systemctl reload NGINX
 - [Using Nginx As a Reverse Proxy With SSL](https://www.mslinn.com/blog/2022/07/08/reverse-proxy.html)
 - [Creating and Renewing Letsencrypt Wildcard SSL Certificates](https://www.mslinn.com/blog/2022/06/15/certbot.html)
 - [Letsencrypt/ACME Wildcard SSL Certificates by Lego](https://www.mslinn.com/blog/2023/03/02/lego.html)
+- [Generating options-ssl-nginx.conf and ssl-dhparams in certonly mode](https://community.letsencrypt.org/t/generating-options-ssl-nginx-conf-and-ssl-dhparams-in-certonly-mode/136272)
