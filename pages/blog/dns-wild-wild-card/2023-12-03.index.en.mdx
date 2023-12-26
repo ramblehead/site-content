@@ -2,9 +2,8 @@
 title: SSL Certificates with DNS Wild Wild Card
 authors:
   - Victor Rybynok
-draft: true
-datePublished: '2023-12-03'
-dateUpdated: '2023-12-03'
+datePublished: '2023-12-26'
+# dateUpdated: '2023-12-03'
 description:
   Self-hosted wildcard DNS configuration example with multiple servers on a single IP
   with similar port numbers (e.g. multiple https on different subdomains) and SSL
@@ -57,7 +56,7 @@ It is also assumed that there is a static HTML page on the host file system that
 holds page not found error. For example:
 
 ```
-/home/rh/artizanya/packages/wui-errors/out/404.html
+/home/rh/artizanya-host/packages/wui-errors/out/404.html
 ```
 
 (I might write another article on setting-up Next.js 14 as a web server and as a
@@ -103,7 +102,8 @@ The following command is an example of how LEGO may be used for DNS-01 challenge
 and wildcard subdomain:
 
 ```shell
-$ cd /home/rh/artizanya/utils/ssl
+$ # environment variable: GOOGLE_DOMAINS_ACCESS_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+$ cd /home/rh/artizanya-host
 $ lego --accept-tos \
        --dns=googledomains \
        --domains='artizanya.com' \
@@ -118,7 +118,7 @@ The following commands could be used to obtain NGINX files required for Let's
 Encrypt SSL:
 
 ```shell
-$ cd /home/rh/artizanya/utils/ssl
+$ cd /home/rh/artizanya-host
 $ mkdir -pv nginx/letsencrypt && cd nginx/letsencrypt
 $ wget --backups=1 https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
 $ wget --backups=1 https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem
@@ -127,8 +127,10 @@ $ wget --backups=1 https://raw.githubusercontent.com/certbot/certbot/master/cert
 
 ## Installing and Configuring NGINX
 
+NGINX configuration file for `artizanya.com`:
+
 ```nginxconf
-# /home/rh/artizanya/utils/ssl/nginx/sites-available/artizanya.com
+# /home/rh/artizanya-host/nginx/sites-available/artizanya.com
 
 server {
   listen 80 default_server;
@@ -143,15 +145,15 @@ server {
   listen 443 ssl default_server;
   listen [::]:443 ssl default_server;
 
-  ssl_certificate /home/rh/artizanya/utils/ssl/.lego/certificates/artizanya.com.crt;
-  ssl_certificate_key /home/rh/artizanya/utils/ssl/.lego/certificates/artizanya.com.key;
-  ssl_trusted_certificate /home/rh/artizanya/utils/ssl/.lego/certificates/artizanya.com.issuer.crt;
-  include /home/rh/artizanya/utils/ssl/nginx/letsencrypt/options-ssl-nginx.conf;
-  ssl_dhparam /home/rh/artizanya/utils/ssl/nginx/letsencrypt/ssl-dhparams.pem;
+  ssl_certificate /home/rh/artizanya-host/.lego/certificates/artizanya.com.crt;
+  ssl_certificate_key /home/rh/artizanya-host/.lego/certificates/artizanya.com.key;
+  ssl_trusted_certificate /home/rh/artizanya-host/.lego/certificates/artizanya.com.issuer.crt;
+  include /home/rh/artizanya-host/nginx/letsencrypt/options-ssl-nginx.conf;
+  ssl_dhparam /home/rh/artizanya-host/nginx/letsencrypt/ssl-dhparams.pem;
 
   server_name *.artizanya.com;
 
-  root /home/rh/artizanya/packages/wui-errors/out;
+  root /home/rh/artizanya-host/packages/wui-errors/out;
   index 404.html;
 }
 
@@ -159,11 +161,11 @@ server {
   listen 443 ssl;
   listen [::]:443 ssl;
 
-  ssl_certificate /home/rh/artizanya/utils/ssl/.lego/certificates/artizanya.com.crt;
-  ssl_certificate_key /home/rh/artizanya/utils/ssl/.lego/certificates/artizanya.com.key;
-  ssl_trusted_certificate /home/rh/artizanya/utils/ssl/.lego/certificates/artizanya.com.issuer.crt;
-  include /home/rh/artizanya/utils/ssl/nginx/letsencrypt/options-ssl-nginx.conf;
-  ssl_dhparam /home/rh/artizanya/utils/ssl/nginx/letsencrypt/ssl-dhparams.pem;
+  ssl_certificate /home/rh/artizanya-host/.lego/certificates/artizanya.com.crt;
+  ssl_certificate_key /home/rh/artizanya-host/.lego/certificates/artizanya.com.key;
+  ssl_trusted_certificate /home/rh/artizanya-host/.lego/certificates/artizanya.com.issuer.crt;
+  include /home/rh/artizanya-host/nginx/letsencrypt/options-ssl-nginx.conf;
+  ssl_dhparam /home/rh/artizanya-host/nginx/letsencrypt/ssl-dhparams.pem;
 
   server_name artizanya.com;
 
@@ -178,30 +180,120 @@ server {
 }
 ```
 
-```shell
-$ ln -s /home/rh/artizanya/utils/ssl/nginx/sites-available/artizanya.com /etc/nginx/sites-enabled
-```
+To enable above NGINX configuration:
 
 ```shell
-$ sudo nginx -t
+$ ln -s /home/rh/artizanya-host/nginx/sites-available/artizanya.com /etc/nginx/sites-enabled
+```
+
+The following command can be used to verify NGINX configuration:
+
+```shell
+# nginx -t
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```
 
+To reload NGINX after configuration change:
+
 ```shell
-$ sudo systemctl reload nginx
+# systemctl reload nginx
 ```
+
+To view NGINX available output:
+
+```shell
+$ journalctl -u dns01_challenge.service
+```
+
+To follow NGINX current output:
 
 ```shell
 $ journalctl --no-pager --follow -u nginx
 ```
 
-```shell
-$ systemctl daemon-reload
+## Installing and Configuring systemd LEGO timer
+
+The following bash, service and timer files are required to execute LEGO on
+systemd timer:
+
+```bash
+# /home/rh/artizanya-host/utils/dns01_challenge.sh
+
+cd ..
+
+ACTION=run
+if [ -f .lego/certificates/artizanya.com.crt ]; then
+  ACTION=renew
+fi
+
+lego --accept-tos \
+     --dns=googledomains \
+     --domains='artizanya.com' \
+     --domains='*.artizanya.com' \
+     --email='rh@artizanya.com' \
+     "${ACTION}"
 ```
 
+```ini
+# /home/rh/artizanya-host/systemd/dns01_challenge.timer
 
-## Installing and Configuring systemd Lego timer
+[Unit]
+Description=Run Artizanya dns-01_challenge.service every 2 months
+
+[Timer]
+Unit=dns01_challenge.service
+# Run on the 7th day of every odd month
+OnCalendar=*-01,03,05,07,09,11-07 00:00:00 UTC
+# or run every 2 months
+# OnCalendar=*-*-1/2 00:00:00 UTC
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
+
+```ini
+# /home/rh/artizanya-host/systemd/dns01_challenge.service
+
+[Unit]
+Description=Execute dns01_challenge.sh script
+
+[Service]
+User=rh
+Group=rh
+Type=oneshot
+WorkingDirectory=/home/rh/artizanya-host
+EnvironmentFile=/home/rh/artizanya-host/.env
+Environment=PATH=/home/rh/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ExecStart=/home/rh/artizanya-host/utils/dns01_challenge.sh
+```
+
+`.env` file referred by service option `EnvironmentFile` should contain
+environment variable `GOOGLE_DOMAINS_ACCESS_TOKEN` (see [LEGO DNS Providers
+documentation](https://go-acme.github.io/lego/dns/) for the environment
+variables required by LEGO for your DNS provider).
+
+To enable above service and timer:
+
+```shell
+# systemctl enable /home/rh/artizanya-host/systemd/dns01_challenge.service
+# systemctl enable --now /home/rh/artizanya-host/systemd/dns01_challenge.timer
+```
+
+To make timer targets to wait until real time is initialised on systems with no
+real time clock (such as Raspberry Pi 4):
+
+```shell
+# systemctl enable --now systemd-time-wait-sync.service
+```
+
+To reload systemd after changing enabled service and timer files:
+
+
+```shell
+# systemctl daemon-reload
+```
 
 ## References
 
