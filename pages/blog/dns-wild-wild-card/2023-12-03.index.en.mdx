@@ -212,7 +212,7 @@ To follow NGINX current output:
 $ journalctl --no-pager --follow -u nginx
 ```
 
-## Installing and Configuring systemd LEGO timer
+## systemd LEGO auto-update timer
 
 The following bash, service and timer files are required to execute LEGO on
 systemd timer:
@@ -290,20 +290,35 @@ real time clock (such as Raspberry Pi 4):
 
 To reload systemd after changing enabled service and timer files:
 
-
 ```shell
 # systemctl daemon-reload
 ```
 
 ## DANE TLSA records
 
+To print TLSA record for the current TSL certificate:
+
+```shell
+printf '_25._tcp.%s. IN TLSA 3 1 1 %s\n' artizanya.com \
+  (openssl x509 -in /home/rh/artizanya-host/.lego/certificates/artizanya.com.crt -noout -pubkey | \
+   openssl pkey -pubin -outform DER | \
+   openssl dgst -sha256 -binary | \
+   hexdump -ve '/1 "%02x"')
+```
+
+The output of the above command should be entered to DNS records (I do not know
+how to automate this step yet).
+
+- [lego-tlsa by Pauline Middelink](https://github.com/middelink/lego-tlsa)
 - [Check a DANE TLS Service by Shumon Huque](https://www.huque.com/bin/danecheck)
 - [DANE TLSA record verifier by SIDN Labs](https://check.sidnlabs.nl/dane/)
 - [DANE SMTP validator by sys4 etc.](https://dane.sys4.de/)
 
 ## References
 
-- [Using Nginx As a Reverse Proxy With SSL](https://www.mslinn.com/blog/2022/07/08/reverse-proxy.html)
-- [Creating and Renewing Letsencrypt Wildcard SSL Certificates](https://www.mslinn.com/blog/2022/06/15/certbot.html)
-- [Letsencrypt/ACME Wildcard SSL Certificates by Lego](https://www.mslinn.com/blog/2023/03/02/lego.html)
-- [Generating options-ssl-nginx.conf and ssl-dhparams in certonly mode](https://community.letsencrypt.org/t/generating-options-ssl-nginx-conf-and-ssl-dhparams-in-certonly-mode/136272)
+- [Using Nginx As a Reverse Proxy With SSL (2023-03-02) Mike Slinn](https://www.mslinn.com/blog/2022/07/08/reverse-proxy.html)
+- [Creating and Renewing Letsencrypt Wildcard SSL Certificates (2023-03-02) Mike Slinn](https://www.mslinn.com/blog/2022/06/15/certbot.html)
+- [Letsencrypt/ACME Wildcard SSL Certificates by Lego (2023-06-07) Mike Slinn](https://www.mslinn.com/blog/2023/03/02/lego.html)
+- [Generating options-ssl-nginx.conf and ssl-dhparams in certonly mode (2020-10) Wilson29thID](https://community.letsencrypt.org/t/generating-options-ssl-nginx-conf-and-ssl-dhparams-in-certonly-mode/136272)
+- [Chain of Trust (2021-10-02) Let's Encrypt](https://letsencrypt.org/certificates/)
+- [Use the ACME DNS-Challenge to get a TLS certificate (2020-04-13) Marco Franssen](https://marcofranssen.nl/use-the-acme-dns-challenge-to-get-a-tls-certificate)
