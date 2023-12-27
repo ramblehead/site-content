@@ -233,6 +233,8 @@ lego --accept-tos \
      --domains='*.artizanya.com' \
      --email='rh@artizanya.com' \
      "${ACTION}"
+
+systemctl reload nginx
 ```
 
 ```ini
@@ -260,8 +262,6 @@ WantedBy=timers.target
 Description=Execute dns01_challenge.sh script
 
 [Service]
-User=rh
-Group=rh
 Type=oneshot
 WorkingDirectory=/home/rh/artizanya-host
 EnvironmentFile=/home/rh/artizanya-host/.env
@@ -294,6 +294,12 @@ To reload systemd after changing enabled service and timer files:
 ```shell
 # systemctl daemon-reload
 ```
+
+## DANE TLSA records
+
+- [Check a DANE TLS Service by Shumon Huque](https://www.huque.com/bin/danecheck)
+- [DANE TLSA record verifier by SIDN Labs](https://check.sidnlabs.nl/dane/)
+- [DANE SMTP validator by sys4 etc.](https://dane.sys4.de/)
 
 ## References
 
