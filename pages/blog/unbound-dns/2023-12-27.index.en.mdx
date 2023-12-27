@@ -1,0 +1,32 @@
+---
+title: Unbound DNS
+authors:
+  - Victor Rybynok
+draft: true
+datePublished: '2023-12-26'
+description:
+  Unbound DNS configuration guide
+categories: [dns, unbound-dns]
+---
+
+## Handling local addresses
+
+Add the following lines to `server` section in `/etc/unbound/unbound.conf` to
+resolve [artizanya.com](http://artizanya.com/) on local network from within NAT:
+
+```yaml
+local-zone: "artizanya.com." static
+local-data: "artizanya.com. IN A 127.0.0.1"
+```
+
+To validate the Unbound configuration file:
+
+```shell
+$ unbound-checkconf /etc/unbound/unbound.conf
+```
+
+To restart Unbound service:
+
+```shell
+# systemctl restart unbound
+```
