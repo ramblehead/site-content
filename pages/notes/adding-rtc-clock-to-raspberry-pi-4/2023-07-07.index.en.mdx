@@ -1,17 +1,19 @@
 ---
-title: Adding RTC Clock to Raspberry PI 4
+title: Adding RTC Clock to Raspberry Pi 4
 dateUpdated: '2024-01-22'
 description:
-  A short instruction of how to add a Real Time Clock to Raspberry Pi.
+  A short instruction of how to add a Real Time Clock to Raspberry Pi 4.
 ---
 
 ### Setting up I2C
 
 #### Enable I2C
 
-```shell
-# raspi-config
-```
+Add or uncomment `dtparam=i2c_arm=on` line in `/boot/config.txt`.
+
+Add `i2c-dev` line to `/etc/modules`.
+
+Reboot Raspberry Pi.
 
 #### Check if RTC Module is Connected to I2C
 
@@ -42,7 +44,7 @@ Enable kernel module:
 # modprobe rtc-ds1307
 ```
 
-Run the following command as root to add I2C RTC device:
+Run the following command to add I2C RTC device:
 
 ```shell
 # echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
@@ -83,7 +85,7 @@ Write the system time to the RTC board:
 # hwclock --systohc
 ```
 
-#### Auto-setup RTC on every boot
+### Auto-setup RTC on every boot
 
 Add the following line to the end of `/etc/modules`:
 
@@ -99,7 +101,7 @@ hwclock -s
 date
 ```
 
-#### Setting system and RTC time
+### Setting system and RTC time
 
 To test RTC,  disable automatic system clock synchronisation:
 
