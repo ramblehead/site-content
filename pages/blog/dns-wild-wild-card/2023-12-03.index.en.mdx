@@ -299,8 +299,9 @@ To reload systemd after changing enabled service and timer files:
 To print TLSA record for the current TSL certificate:
 
 ```shell
-printf '_25._tcp.%s. IN TLSA 3 1 1 %s\n' artizanya.com \
-  (openssl x509 -in /home/rh/artizanya-host/.lego/certificates/artizanya.com.crt -noout -pubkey | \
+$ printf '_25._tcp.%s. IN TLSA 3 1 1 %s\n' artizanya.com \
+  (openssl x509 -in /home/rh/artizanya-host/.lego/certificates/artizanya.com.crt \
+   -noout -pubkey | \
    openssl pkey -pubin -outform DER | \
    openssl dgst -sha256 -binary | \
    hexdump -ve '/1 "%02x"')
