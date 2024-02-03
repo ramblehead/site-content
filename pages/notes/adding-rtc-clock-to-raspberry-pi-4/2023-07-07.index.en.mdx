@@ -1,22 +1,24 @@
 ---
-title: Adding RTC Clock to Raspberry PI 4
-dateUpdated: '2023-07-07'
+title: Adding RTC Clock to Raspberry Pi 4
+dateUpdated: '2024-01-22'
 description:
-  A short instruction of how to add a Real Time Clock to Raspberry Pi.
+  A short instruction of how to add a Real Time Clock to Raspberry Pi 4.
 ---
 
 ### Setting up I2C
 
 #### Enable I2C
 
-```bash
-sudo raspi-config
-```
+Add or uncomment `dtparam=i2c_arm=on` line in `/boot/config.txt`.
+
+Add `i2c-dev` line to `/etc/modules`.
+
+Reboot Raspberry Pi.
 
 #### Check if RTC Module is Connected to I2C
 
-```bash
-i2cdetect -y 1
+```shell
+$ i2cdetect -y 1
 ```
 
 <figure>
@@ -38,14 +40,14 @@ then the I2C device has been detected but not working correctly.
 
 Enable kernel module:
 
-```bash
-sudo modprobe rtc-ds1307
+```shell
+# modprobe rtc-ds1307
 ```
 
-Run the following command as root to add I2C RTC device:
+Run the following command to add I2C RTC device:
 
-```bash
-echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
+```shell
+# echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
 ```
 
 After above command, `i2cdetect -y 1` will no longer have access to I2C address
@@ -65,29 +67,29 @@ and display `UU` instead of RTC Clock:
 
 Check the time on the RTC device:
 
-```bash
-sudo hwclock --show
+```shell
+$ hwclock --show
 ```
 
 Check the system clock time:
 
-```bash
-date
-# or
-timedatectl
+```shell
+# date
+# # or
+# timedatectl
 ```
 
 Write the system time to the RTC board:
 
-```bash
-sudo hwclock --systohc
+```shell
+# hwclock --systohc
 ```
 
-#### Auto-setup RTC on every boot
+### Auto-setup RTC on every boot
 
 Add the following line to the end of `/etc/modules`:
 
-```bash
+```
 rtc-ds1307
 ```
 
@@ -99,67 +101,60 @@ hwclock -s
 date
 ```
 
-#### Setting system and RTC time
+### Setting system and RTC time
 
-To disable automatic system clock synchronisation:
+To test RTC,  disable automatic system clock synchronisation:
 
-```bash
-sudo systemctl disable systemd-timesync
+```shell
+# systemctl disable systemd-timesync
 ```
 
 To manually set the system clock and time zone via `timedatectl`:
 
-```bash
-timedatectl set-time "<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>"
-set-timezone <TIMEZONE>
+```shell
+$ timedatectl set-time "<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>"
+$ set-timezone <TIMEZONE>
 ```
 
 To list possible `<TIMEZONE>` values:
 
-```bash
-timedatectl list-timezones
+```shell
+$ timedatectl list-timezones
 ```
 
 To manually set the system clock time via `date`:
 
-```bash
-sudo date MMDDhhmm[[CC]YY][.ss]
-
-# Where:
-#   MM: Month (01 to 12)
-#   DD: Day (01 to 31)
-#   hh: Hour (00 to 23)
-#   mm: Minute (00 to 59)
-#   CC: Century (optional)
-#   YY: Year (00 to 99)
-#   .ss: Seconds (optional)
+```shell
+# date MMDDhhmm[[CC]YY][.ss]
+# # Where:
+# #   MM: Month (01 to 12)
+# #   DD: Day (01 to 31)
+# #   hh: Hour (00 to 23)
+# #   mm: Minute (00 to 59)
+# #   CC: Century (optional)
+# #   YY: Year (00 to 99)
+# #   .ss: Seconds (optional)
 ```
 
 To manually run auto-set the system clock time from `NTP`:
 
-```bash
-# sudo apt install ntpdate
-sudo ntpdate pool.ntp.org
+```shell
+# apt install ntpdate
+# ntpdate pool.ntp.org
 ```
 
 #### RTC debugging hints
 
 Run the following command as root to remove I2C RTC device:
 
-```bash
-echo 0x68 > /sys/class/i2c-adapter/i2c-1/delete_device
-```
-
-Check if RTC module loaded:
-
-```
-dmesg | grep ds1307
+```shell
+# echo 0x68 > /sys/class/i2c-adapter/i2c-1/delete_device
 ```
 
 Check RTC module kernel messages:
 
-```
-dmesg | grep ds1307
+```shell
+$ dmesg | grep ds1307
 ```
 
 ### References
