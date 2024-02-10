@@ -13,8 +13,8 @@ description:
 To install or update nvm run the following script:
 
 ```bash
-# see https://github.com/nvm-sh/nvm for the current version
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+$ # see https://github.com/nvm-sh/nvm for the current version
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
 #### References
@@ -48,17 +48,29 @@ NVM_DIR="${HOME}/.nvm"
 
 To list available Node.js versions:
 
-```bash
-nvm ls-remote
+```shell
+$ nvm ls-remote
 ```
 To install particular Node.js `<version>`:
 
-```bash
-nvm install <version>
+```shell
+$ nvm install <version>
+```
+
+To list installed Node.js versions:
+
+```shell
+$ nvm ls
+```
+
+To set default Node.js `<version>`:
+
+```shell
+$ nvm alias default <version>
 ```
 
 To select current Node.js `<version>`:
 
-```bash
-nvm use <version>
+```shell
+$ nvm use <version>
 ```
