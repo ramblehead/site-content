@@ -1,0 +1,82 @@
+---
+title: Go IDE Configuration Notes
+dateUpdated: '2024-02-11'
+description:
+  Collection Go IDE Configuration hints and resource
+  references. These hints were tested on Ubuntu 22.04 LTS.
+---
+
+## Install Go
+
+Download Go language from [go.dev](https://go.dev/dl/) and Unpack to
+corresponding stow directory `/usr/local/stow/go<version>`, such as:
+`/usr/local/stow/go1.22.0.linux-amd64`
+
+Then install via stow:
+
+```shell
+# cd /usr/local/stow
+# stow go<version>
+```
+
+Copy the following file to `/etc/profile.d`
+
+```bash
+# go.sh
+export PATH=$PATH:/usr/local/go/bin
+```
+
+Add the following line to `~/etc/profile.d`:
+
+```bash
+export PATH=$PATH:$HOME/go/bin
+```
+
+Restart.
+
+#### References
+
+- [Go Download and install](https://go.dev/doc/install)
+
+## Install gopls&nbsp;– the Go language server
+
+Install gopls:
+
+```shell
+go install golang.org/x/tools/gopls@latest
+```
+
+#### References
+
+- [gopls installation](https://github.com/golang/tools/tree/master/gopls#installation)
+
+## Install golangci-lint-langserver
+
+Install golangci-lint:
+
+```shell
+$ curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.56.1
+```
+
+Install golangci-lint-langserver:
+
+```shell
+go install github.com/nametake/golangci-lint-langserver@latest
+```
+
+#### References
+
+- [golangci-lint local installation](https://golangci-lint.run/usage/install/#local-installation)
+- [golangci-lint-langserver installation](https://github.com/nametake/golangci-lint-langserver?tab=readme-ov-file#installation)
+
+## gomacro - Go REPL
+
+Install gomacro:
+
+```shell
+go install github.com/cosmos72/gomacro@latest
+```
+
+#### References
+
+- [gomacro how to install](https://github.com/cosmos72/gomacro?tab=readme-ov-file#how-to-install)
