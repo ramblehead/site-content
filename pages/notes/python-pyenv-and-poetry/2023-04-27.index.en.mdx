@@ -1,6 +1,6 @@
 ---
 title: Python pyenv and poetry Notes
-dateUpdated: '2024-02-06'
+dateUpdated: '2024-10-31'
 description:
   Collection of Python pyenv and poetry application hints and resource
   references. These hints were tested on Ubuntu 22.04 LTS.
@@ -66,6 +66,12 @@ To list available Python versions:
 $ pyenv install -l
 ```
 
+To list installed Python versions and selected version:
+
+```shell
+$ pyenv versions
+```
+
 To install particular Python `<version>`:
 
 ```shell
@@ -83,6 +89,12 @@ $ pyenv shell <version>
 
 $ # current directory or its subdirectories
 $ pyenv local <version>
+```
+
+To select system-installed Python version use `<version>  = system` such as:
+
+```shell
+$ pyenv global system
 ```
 
 #### References
@@ -186,11 +198,21 @@ project directory use the following command:
 $ poetry config virtualenvs.in-project true --local
 ```
 
-This command should add the following content to `<project-dir>/poetry.toml` file:
+Also when host has a system Python installation as well as pyenv installations,
+poetry might prefer pyenv even if system version is selected. To always prefer
+active python version use the following command:
+
+```shell
+$ poetry config virtualenvs.prefer-active-python true --local
+```
+
+Those commands should add the following content to `<project-dir>/poetry.toml`
+file:
 
 ```toml
 [virtualenvs]
 in-project = true
+prefer-active-python = true
 ```
 
 Then, run `poetry install` to create in-project virtual environment and install
