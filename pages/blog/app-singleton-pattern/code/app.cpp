@@ -1,0 +1,77 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+class Socket {
+  public:
+    Socket() {
+        std::cout << "Creating Socket" << std::endl;
+    }
+
+    ~Socket() {
+        std::cout << "Closing Socket" << std::endl;
+    }
+};
+
+class Connection {
+  public:
+    Connection(Socket& socket): m_socket{socket} {
+        std::cout << "Creating Connection using Socket" << std::endl;
+        throw std::runtime_error("Connection constructor failed");
+    }
+
+    ~Connection() {
+        std::cout << "Closing Connection" << std::endl;
+    }
+
+  private:
+    Socket& m_socket;
+};
+
+class App {
+  public:
+    static App& get() {
+        static App app;
+        return app;
+    }
+
+    void start() {
+        std::cout << "Starting App" << std::endl;
+    }
+
+    void stop() {
+        std::cout << "Stopping App" << std::endl;
+    }
+
+    // Delete copy constructor and assignment operator to enforce singleton
+    App(const App&) =delete;
+    App& operator=(const App&) =delete;
+
+  private:
+    App() {
+        std::cout << "Creating App API using Connection" << std::endl;
+    }
+
+    ~App() {
+        std::cout << "Closing App API" << std::endl;
+    }
+
+    Socket socket;
+    Connection connection{socket};
+};
+
+int main()
+{
+    try {
+      auto& app = App::get();
+      app.start();
+
+      std::cout << "Hi there!" << std::endl;
+
+      app.stop();
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Exception caught: " << e.what() << std::endl;
+        // Program can handle the error or clean up further if needed
+    }
+}
